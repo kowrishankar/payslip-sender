@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #ecfeff;
+  --foreground: #0f172a;
+  --card: #ffffff;
+  --card-muted: #f0fdfa;
+  --border: #a5f3fc;
+  --accent: #06b6d4;
+  --accent-hover: #0891b2;
+  --accent-muted: #cffafe;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-feature-settings: "rlig" 1, "calt" 1;
+  font-size: 1.0625rem; /* 17px – slightly larger base */
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
