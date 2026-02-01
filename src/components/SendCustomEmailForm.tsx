@@ -26,6 +26,7 @@ export default function SendCustomEmailForm({
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    if (!employee) return;
     setError("");
     setSuccess("");
     setLoading(true);

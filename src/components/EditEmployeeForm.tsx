@@ -44,6 +44,7 @@ export default function EditEmployeeForm({
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    if (!employee) return;
     setError("");
     setLoading(true);
     try {

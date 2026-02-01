@@ -28,6 +28,7 @@ export default function SendPayslipForm({
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    if (!employee) return;
     if (!file) {
       setError("Please select a payslip file (PDF recommended).");
       return;
