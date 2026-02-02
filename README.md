@@ -74,6 +74,17 @@ A web application that lets you manage employees and **send payslips via email**
 - For production, use HTTPS, restrict access (e.g. login), and consider a proper database and file storage (e.g. S3) for payslips.
 - The app does not store payslip files; they are streamed to the email and not saved on the server.
 
+## Vercel / Production migrations
+
+The Vercel build runs `npx prisma generate && next build` (see `vercel.json`), so it does **not** run `prisma migrate deploy`. That avoids the "database schema is not empty" error when Neon already has tables.
+
+- **To run migrations against Neon** (e.g. after adding new migrations): run locally once with your Neon URL:  
+  `DATABASE_URL="postgresql://..." npx prisma migrate deploy`
+- **Optional – run migrations on every deploy**: First baseline Neon so Prisma treats the current schema as applied:  
+  `DATABASE_URL="your-neon-url" npx prisma migrate resolve --applied "20250130120000_init"`  
+  Then in Vercel (or `vercel.json`) set the build command to:  
+  `npx prisma generate && npx prisma migrate deploy && next build`
+
 ## License
 
 MIT
