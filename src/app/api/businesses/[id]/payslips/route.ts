@@ -10,9 +10,11 @@ async function getBusinessAndCheck(businessId: string, employerId: string) {
   });
 }
 
+export const dynamic = "force-dynamic";
+
 export async function GET(
   req: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: { id: string } }
 ) {
   try {
     const token = await getToken({ req, secret });
@@ -20,7 +22,7 @@ export async function GET(
     if (!token?.sub || !isEmployer) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
-    const { id: businessId } = await params;
+    const businessId = params.id;
     const business = await getBusinessAndCheck(businessId, token.sub);
     if (!business) {
       return NextResponse.json({ error: "Business not found" }, { status: 404 });

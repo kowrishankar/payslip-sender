@@ -4,9 +4,11 @@ import { prisma } from "@/lib/prisma";
 
 const secret = process.env.NEXTAUTH_SECRET;
 
+export const dynamic = "force-dynamic";
+
 export async function GET(
   req: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: { id: string } }
 ) {
   try {
     const token = await getToken({ req, secret });
@@ -14,7 +16,7 @@ export async function GET(
     if (!token?.sub || !isEmployer) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
-    const { id: businessId } = await params;
+    const businessId = params.id;
     const business = await prisma.business.findFirst({
       where: { id: businessId, employerId: token.sub },
     });
