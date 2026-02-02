@@ -1,11 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getToken } from "next-auth/jwt";
 import { prisma } from "@/lib/prisma";
+import { put } from "@vercel/blob";
 import fs from "fs";
 import path from "path";
 
 const secret = process.env.NEXTAUTH_SECRET;
 const UPLOADS_DIR = path.join(process.cwd(), "uploads", "payslips");
+const useBlob = Boolean(process.env.BLOB_READ_WRITE_TOKEN);
 
 function ensureUploadsDir() {
   if (!fs.existsSync(UPLOADS_DIR)) {
@@ -128,16 +130,26 @@ export async function POST(req: NextRequest) {
     const fileName = file.name || "payslip.pdf";
     const ext = path.extname(fileName) || ".pdf";
     const payslipId = crypto.randomUUID();
-    const filePath = path.join(UPLOADS_DIR, `${payslipId}${ext}`);
+    let filePath: string;
 
-    ensureUploadsDir();
-    fs.writeFileSync(filePath, buffer);
+    if (useBlob) {
+      const blob = await put(`payslips/${payslipId}${ext}`, buffer, {
+        access: "public",
+        contentType: file.type || "application/pdf",
+      });
+      filePath = blob.url;
+    } else {
+      ensureUploadsDir();
+      const absolutePath = path.join(UPLOADS_DIR, `${payslipId}${ext}`);
+      fs.writeFileSync(absolutePath, buffer);
+      filePath = path.relative(process.cwd(), absolutePath);
+    }
 
     await prisma.payslip.create({
       data: {
         id: payslipId,
         fileName,
-        filePath: path.relative(process.cwd(), filePath),
+        filePath,
         emailMessage,
         amountCents: amountCents ?? undefined,
         businessId,

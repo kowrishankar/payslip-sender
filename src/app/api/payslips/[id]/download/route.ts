@@ -33,6 +33,22 @@ export async function GET(
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
+    // Blob URL (Vercel Blob / production)
+    if (payslip.filePath.startsWith("http://") || payslip.filePath.startsWith("https://")) {
+      const res = await fetch(payslip.filePath);
+      if (!res.ok) {
+        return NextResponse.json({ error: "File not found" }, { status: 404 });
+      }
+      const buffer = Buffer.from(await res.arrayBuffer());
+      return new NextResponse(buffer, {
+        headers: {
+          "Content-Type": "application/pdf",
+          "Content-Disposition": `attachment; filename="${encodeURIComponent(payslip.fileName)}"`,
+        },
+      });
+    }
+
+    // Local file path (development)
     const absolutePath = path.join(process.cwd(), payslip.filePath);
     if (!fs.existsSync(absolutePath)) {
       return NextResponse.json({ error: "File not found" }, { status: 404 });
