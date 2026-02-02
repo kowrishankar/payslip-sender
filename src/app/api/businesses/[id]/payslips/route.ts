@@ -48,16 +48,19 @@ export async function GET(
       orderBy: { createdAt: "desc" },
     });
     return NextResponse.json(
-      payslips.map((p) => ({
-        id: p.id,
-        fileName: p.fileName,
-        employeeId: p.employeeId,
-        employeeName: p.employee.name,
-        employeeEmail: p.employee.email,
-        emailMessage: p.emailMessage ?? undefined,
-        amountCents: p.amountCents ?? undefined,
-        createdAt: p.createdAt.toISOString(),
-      }))
+      payslips.map((p) => {
+        const row = p as typeof p & { amountCents?: number | null };
+        return {
+          id: p.id,
+          fileName: p.fileName,
+          employeeId: p.employeeId,
+          employeeName: p.employee.name,
+          employeeEmail: p.employee.email,
+          emailMessage: p.emailMessage ?? undefined,
+          amountCents: row.amountCents ?? undefined,
+          createdAt: p.createdAt.toISOString(),
+        };
+      })
     );
   } catch (error) {
     console.error(error);
