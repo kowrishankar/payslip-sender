@@ -10,7 +10,8 @@ export default async function BusinessDashboardPage({
   params: Promise<{ businessId: string }>;
 }) {
   const session = await getServerSession(authOptions);
-  if (!session?.user || session.user.role !== "employer") {
+  const canAccess = (session?.user as { isEmployer?: boolean })?.isEmployer ?? session?.user?.role === "employer";
+  if (!session?.user || !canAccess) {
     redirect("/login?callbackUrl=/dashboard");
   }
   const { businessId } = await params;
@@ -33,6 +34,7 @@ export default async function BusinessDashboardPage({
         payDayOfWeek={business.payDayOfWeek ?? undefined}
         payDayOfMonth={business.payDayOfMonth ?? undefined}
         userName={session.user.name ?? "Employer"}
+        isEmployee={(session.user as { isEmployee?: boolean }).isEmployee ?? session.user.role === "employee"}
       />
     </main>
   );

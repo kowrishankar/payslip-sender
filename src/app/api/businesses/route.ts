@@ -7,7 +7,8 @@ const secret = process.env.NEXTAUTH_SECRET;
 export async function GET(req: NextRequest) {
   try {
     const token = await getToken({ req, secret });
-    if (!token?.sub || token.role !== "employer") {
+    const isEmployer = (token as { isEmployer?: boolean }).isEmployer ?? token?.role === "employer";
+    if (!token?.sub || !isEmployer) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
     const businesses = await prisma.business.findMany({
@@ -38,7 +39,8 @@ export async function GET(req: NextRequest) {
 export async function POST(req: NextRequest) {
   try {
     const token = await getToken({ req, secret });
-    if (!token?.sub || token.role !== "employer") {
+    const isEmployer = (token as { isEmployer?: boolean }).isEmployer ?? token?.role === "employer";
+    if (!token?.sub || !isEmployer) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
     const body = await req.json();

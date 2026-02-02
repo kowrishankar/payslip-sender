@@ -25,7 +25,6 @@ export async function POST(req: NextRequest) {
       where: {
         inviteToken: token,
         inviteTokenExpires: { gt: new Date() },
-        role: "employee",
       },
     });
 

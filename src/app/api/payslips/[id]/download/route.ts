@@ -25,9 +25,11 @@ export async function GET(
       return NextResponse.json({ error: "Payslip not found" }, { status: 404 });
     }
 
+    const isEmployer = (token as { isEmployer?: boolean }).isEmployer ?? token.role === "employer";
+    const isEmployee = (token as { isEmployee?: boolean }).isEmployee ?? token.role === "employee";
     const canAccess =
-      token.role === "employer" && payslip.employerId === token.sub ||
-      token.role === "employee" && payslip.employeeId === token.sub;
+      (isEmployer && payslip.employerId === token.sub) ||
+      (isEmployee && payslip.employeeId === token.sub);
 
     if (!canAccess) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });

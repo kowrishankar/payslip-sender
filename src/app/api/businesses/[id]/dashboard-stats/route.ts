@@ -10,7 +10,8 @@ export async function GET(
 ) {
   try {
     const token = await getToken({ req, secret });
-    if (!token?.sub || token.role !== "employer") {
+    const isEmployer = (token as { isEmployer?: boolean }).isEmployer ?? token?.role === "employer";
+    if (!token?.sub || !isEmployer) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
     const { id: businessId } = await params;

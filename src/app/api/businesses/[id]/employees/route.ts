@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getToken } from "next-auth/jwt";
 import { prisma } from "@/lib/prisma";
-import { sendInviteEmail } from "@/lib/email";
+import { sendInviteEmail, sendAddedAsEmployeeEmail } from "@/lib/email";
 import crypto from "crypto";
 
 const secret = process.env.NEXTAUTH_SECRET;
@@ -58,7 +58,8 @@ export async function GET(
 ) {
   try {
     const token = await getToken({ req, secret });
-    if (!token?.sub || token.role !== "employer") {
+    const isEmployer = (token as { isEmployer?: boolean }).isEmployer ?? token?.role === "employer";
+    if (!token?.sub || !isEmployer) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
     const { id: businessId } = await params;
@@ -117,7 +118,8 @@ export async function POST(
 ) {
   try {
     const token = await getToken({ req, secret });
-    if (!token?.sub || token.role !== "employer") {
+    const isEmployer = (token as { isEmployer?: boolean }).isEmployer ?? token?.role === "employer";
+    if (!token?.sub || !isEmployer) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
     const { id: businessId } = await params;
@@ -156,12 +158,6 @@ export async function POST(
           { status: 409 }
         );
       }
-      if (employeeUser.role !== "employee") {
-        return NextResponse.json(
-          { error: "A user with this email already exists as an employer" },
-          { status: 409 }
-        );
-      }
       const w = payDayOfWeek !== undefined && payDayOfWeek !== "" ? Number(payDayOfWeek) : NaN;
       const m = payDayOfMonth !== undefined && payDayOfMonth !== "" ? Number(payDayOfMonth) : NaN;
       await prisma.businessEmployee.create({
@@ -173,6 +169,30 @@ export async function POST(
           payDayOfMonth: payCycle === "monthly" && !Number.isNaN(m) && m >= 1 && m <= 31 ? m : null,
         },
       });
+      if (process.env.SMTP_USER && process.env.SMTP_PASS) {
+        const loginLink = `${baseUrl}/login?callbackUrl=${encodeURIComponent(`${baseUrl}/my-payslips`)}`;
+        if (employeeUser.passwordHash) {
+          await sendAddedAsEmployeeEmail({
+            to: normalizedEmail,
+            employeeName: name.trim(),
+            businessName: business.name,
+            loginLink,
+          });
+        } else {
+          const inviteToken = crypto.randomBytes(32).toString("hex");
+          const inviteTokenExpires = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
+          await prisma.user.update({
+            where: { id: employeeUser.id },
+            data: { inviteToken, inviteTokenExpires },
+          });
+          const inviteLink = `${baseUrl}/invite/accept?token=${inviteToken}`;
+          await sendInviteEmail({
+            to: normalizedEmail,
+            employeeName: name.trim(),
+            inviteLink,
+          });
+        }
+      }
       const link = await prisma.businessEmployee.findUnique({
         where: { businessId_employeeId: { businessId, employeeId: employeeUser.id } },
         include: { business: true },

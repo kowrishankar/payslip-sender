@@ -18,20 +18,19 @@ export async function GET(req: NextRequest) {
     if (!user) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
-    const profile: {
-      id: string;
-      email: string;
-      name: string;
-      role: string;
-      department?: string;
-      startDate?: string;
-      address?: string;
-      contactNumber?: string;
-    } = {
+    const [businessCount, employeeLinkCount] = await Promise.all([
+      prisma.business.count({ where: { employerId: user.id } }),
+      prisma.businessEmployee.count({ where: { employeeId: user.id } }),
+    ]);
+    const isEmployer = businessCount > 0;
+    const isEmployee = employeeLinkCount > 0;
+    const profile = {
       id: user.id,
       email: user.email,
       name: user.name,
       role: user.role,
+      isEmployer,
+      isEmployee,
       department: user.department ?? undefined,
       startDate: user.startDate?.toISOString().slice(0, 10),
       address: user.address ?? undefined,

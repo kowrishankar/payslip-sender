@@ -14,6 +14,31 @@ function getTransporter() {
   });
 }
 
+export async function sendAddedAsEmployeeEmail({
+  to,
+  employeeName,
+  businessName,
+  loginLink,
+}: {
+  to: string;
+  employeeName: string;
+  businessName: string;
+  loginLink: string;
+}) {
+  const transporter = getTransporter();
+  await transporter.sendMail({
+    from: process.env.SMTP_FROM || process.env.SMTP_USER,
+    to,
+    subject: `You've been added to ${businessName}`,
+    text: `Hi ${employeeName},\n\nYou've been added as an employee to ${businessName}. Log in with your existing account to view your payslips:\n\n${loginLink}\n\nBest regards,\n${businessName}`,
+    html: `
+      <p>Hi ${employeeName},</p>
+      <p>You've been added as an employee to <strong>${businessName}</strong>. <a href="${loginLink}">Log in</a> with your existing account to view your payslips.</p>
+      <p>Best regards,<br/>${businessName}</p>
+    `,
+  });
+}
+
 export async function sendInviteEmail({
   to,
   employeeName,

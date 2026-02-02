@@ -23,11 +23,19 @@ export const authOptions: AuthOptions = {
         if (!user?.passwordHash) return null;
         const ok = await bcrypt.compare(credentials.password, user.passwordHash);
         if (!ok) return null;
+        const [businessCount, employeeLinkCount] = await Promise.all([
+          prisma.business.count({ where: { employerId: user.id } }),
+          prisma.businessEmployee.count({ where: { employeeId: user.id } }),
+        ]);
+        const isEmployer = businessCount > 0;
+        const isEmployee = employeeLinkCount > 0;
         return {
           id: user.id,
           email: user.email,
           name: user.name,
           role: user.role,
+          isEmployer,
+          isEmployee,
         };
       },
     }),
@@ -35,17 +43,23 @@ export const authOptions: AuthOptions = {
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
+        const u = user as { role?: string; isEmployer?: boolean; isEmployee?: boolean };
         token.sub = user.id;
         token.email = user.email;
         token.name = user.name;
-        token.role = (user as { role?: string }).role;
+        token.role = u.role;
+        token.isEmployer = u.isEmployer;
+        token.isEmployee = u.isEmployee;
       }
       return token;
     },
     async session({ session, token }) {
       if (session.user) {
-        (session.user as { id?: string; role?: string }).id = token.sub ?? undefined;
-        (session.user as { id?: string; role?: string }).role = token.role as string | undefined;
+        const t = token as { role?: string; isEmployer?: boolean; isEmployee?: boolean };
+        (session.user as { id?: string; role?: string; isEmployer?: boolean; isEmployee?: boolean }).id = token.sub ?? undefined;
+        (session.user as { role?: string }).role = t.role as string | undefined;
+        (session.user as { isEmployer?: boolean }).isEmployer = t.isEmployer;
+        (session.user as { isEmployee?: boolean }).isEmployee = t.isEmployee;
       }
       return session;
     },
@@ -62,15 +76,22 @@ export interface SessionUser {
   email: string;
   name: string;
   role: string;
+  isEmployer: boolean;
+  isEmployee: boolean;
 }
 
 export async function getSessionUser(req: NextRequest): Promise<SessionUser | null> {
   const token = await getToken({ req, secret });
-  if (!token?.sub || !token.email || !token.role) return null;
+  if (!token?.sub || !token.email) return null;
+  const t = token as { role?: string; isEmployer?: boolean; isEmployee?: boolean };
+  const isEmployer = t.isEmployer ?? t.role === "employer";
+  const isEmployee = t.isEmployee ?? t.role === "employee";
   return {
     id: token.sub,
     email: token.email as string,
     name: (token.name as string) ?? "",
-    role: token.role as string,
+    role: (t.role as string) ?? "employee",
+    isEmployer,
+    isEmployee,
   };
 }

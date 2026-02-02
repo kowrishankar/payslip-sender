@@ -19,7 +19,7 @@ interface MyProfile {
   contactNumber?: string;
 }
 
-export default function MyPayslipsClient({ userName }: { userName: string }) {
+export default function MyPayslipsClient({ userName, isEmployer = false }: { userName: string; isEmployer?: boolean }) {
   const [payslips, setPayslips] = useState<PayslipItem[]>([]);
   const [profile, setProfile] = useState<MyProfile | null>(null);
   const [loading, setLoading] = useState(true);
@@ -62,8 +62,16 @@ export default function MyPayslipsClient({ userName }: { userName: string }) {
           <h1 className="text-3xl font-bold text-slate-900">My payslips</h1>
           <p className="text-slate-700 text-base mt-1">View and download your payslips</p>
         </div>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4 flex-wrap">
           <span className="text-slate-800 text-base font-medium">{userName}</span>
+          {isEmployer && (
+            <Link
+              href="/dashboard"
+              className="text-base font-medium text-slate-700 hover:text-cyan-600 transition-colors py-2 px-3 rounded-xl hover:bg-cyan-50"
+            >
+              My businesses
+            </Link>
+          )}
           <Link
             href="/"
             className="text-base font-medium text-slate-700 hover:text-cyan-600 transition-colors py-2 px-3 rounded-xl hover:bg-cyan-50"

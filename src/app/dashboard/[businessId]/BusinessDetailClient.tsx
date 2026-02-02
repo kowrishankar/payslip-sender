@@ -45,6 +45,7 @@ interface BusinessDetailClientProps {
   payDayOfWeek?: number;
   payDayOfMonth?: number;
   userName: string;
+  isEmployee?: boolean;
 }
 
 export default function BusinessDetailClient({
@@ -57,6 +58,7 @@ export default function BusinessDetailClient({
   payDayOfWeek,
   payDayOfMonth,
   userName,
+  isEmployee = false,
 }: BusinessDetailClientProps) {
   const logoSrc = businessLogoPath
     ? `/api/businesses/${businessId}/logo`
@@ -107,8 +109,13 @@ export default function BusinessDetailClient({
               )}
             </div>
           </div>
-          <div className="flex items-center gap-5 shrink-0">
+          <div className="flex items-center gap-5 shrink-0 flex-wrap">
             <span className="text-slate-800 text-base font-medium">{userName}</span>
+            {isEmployee && (
+              <Link href="/my-payslips" className="text-base text-slate-600 hover:text-cyan-600 transition-colors py-2 px-3 rounded-xl hover:bg-cyan-50 font-medium">
+                My payslips
+              </Link>
+            )}
             <Link href="/" className="text-base text-slate-600 hover:text-cyan-600 transition-colors py-2 px-3 rounded-xl hover:bg-cyan-50 font-medium">
               Home
             </Link>

@@ -24,9 +24,10 @@ const ChevronRightIcon = ({ className }: { className?: string }) => (
 
 interface BusinessListClientProps {
   userName: string;
+  isEmployee?: boolean;
 }
 
-export default function BusinessListClient({ userName }: BusinessListClientProps) {
+export default function BusinessListClient({ userName, isEmployee = false }: BusinessListClientProps) {
   const [businesses, setBusinesses] = useState<Business[]>([]);
   const [loading, setLoading] = useState(true);
   const [showAdd, setShowAdd] = useState(false);
@@ -78,8 +79,13 @@ export default function BusinessListClient({ userName }: BusinessListClientProps
           <h1 className="text-3xl font-bold text-slate-900">Your businesses</h1>
           <p className="text-slate-700 text-base mt-1">Select a business to manage staff and payslips</p>
         </div>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4 flex-wrap">
           <span className="text-slate-700 text-base font-medium">{userName}</span>
+          {isEmployee && (
+            <Link href="/my-payslips" className="text-base text-slate-600 hover:text-cyan-600 transition-colors py-2 px-3 rounded-xl hover:bg-cyan-50 font-medium">
+              My payslips
+            </Link>
+          )}
           <Link href="/" className="text-base text-slate-600 hover:text-cyan-600 transition-colors py-2 px-3 rounded-xl hover:bg-cyan-50 font-medium">
             Home
           </Link>

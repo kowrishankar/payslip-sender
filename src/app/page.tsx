@@ -3,10 +3,19 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { redirect } from "next/navigation";
 
+function canAccessDashboard(user: { role?: string; isEmployer?: boolean }) {
+  return (user as { isEmployer?: boolean }).isEmployer ?? user.role === "employer";
+}
+function canAccessMyPayslips(user: { role?: string; isEmployee?: boolean }) {
+  return (user as { isEmployee?: boolean }).isEmployee ?? user.role === "employee";
+}
+
 export default async function Home() {
   const session = await getServerSession(authOptions);
-  if (session?.user?.role === "employer") redirect("/dashboard");
-  if (session?.user?.role === "employee") redirect("/my-payslips");
+  if (session?.user) {
+    if (canAccessDashboard(session.user)) redirect("/dashboard");
+    if (canAccessMyPayslips(session.user)) redirect("/my-payslips");
+  }
 
   const faqs = [
     {

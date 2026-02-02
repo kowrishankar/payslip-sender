@@ -22,7 +22,10 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    if (token.role === "employer") {
+    const isEmployer = (token as { isEmployer?: boolean }).isEmployer ?? token.role === "employer";
+    const isEmployee = (token as { isEmployee?: boolean }).isEmployee ?? token.role === "employee";
+
+    if (isEmployer) {
       const { searchParams } = new URL(req.url);
       const businessId = searchParams.get("businessId") || undefined;
       const employeeId = searchParams.get("employeeId") || undefined;
@@ -61,7 +64,7 @@ export async function GET(req: NextRequest) {
       );
     }
 
-    if (token.role === "employee") {
+    if (isEmployee) {
       const payslips = await prisma.payslip.findMany({
         where: { employeeId: token.sub },
         orderBy: { createdAt: "desc" },
@@ -88,7 +91,8 @@ export async function GET(req: NextRequest) {
 export async function POST(req: NextRequest) {
   try {
     const token = await getToken({ req, secret });
-    if (!token?.sub || token.role !== "employer") {
+    const isEmployer = (token as { isEmployer?: boolean }).isEmployer ?? token?.role === "employer";
+    if (!token?.sub || !isEmployer) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
