@@ -10,6 +10,7 @@ import BulkSendPayslipForm from "@/components/BulkSendPayslipForm";
 import EditEmployeeForm from "@/components/EditEmployeeForm";
 import SendCustomEmailForm from "@/components/SendCustomEmailForm";
 import PayslipsSentList from "@/components/PayslipsSentList";
+import ScheduledPayslipsList from "@/components/ScheduledPayslipsList";
 import PayReminder from "@/components/PayReminder";
 import BusinessSettings from "@/components/BusinessSettings";
 import BusinessDashboardStats from "@/components/BusinessDashboardStats";
@@ -199,6 +200,14 @@ export default function BusinessDetailClient({
             <PayslipsSentList businessId={businessId} refreshTrigger={refreshTrigger} />
           </div>
         )}
+
+        {/* Scheduled payslips – show pending jobs with edit / cancel / send now */}
+        <div className="mt-5">
+          <ScheduledPayslipsList
+            businessId={businessId}
+            refreshTrigger={refreshTrigger}
+          />
+        </div>
       </div>
 
       {/* Add Employee modal */}
@@ -307,6 +316,7 @@ export default function BusinessDetailClient({
           onClose={() => setShowBulkSendModal(false)}
           onSuccess={() => {
             onSuccess();
+            setRefreshTrigger((n) => n + 1);
             setShowBulkSendModal(false);
           }}
         />
