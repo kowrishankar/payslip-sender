@@ -22,7 +22,7 @@ export async function GET(req: NextRequest) {
       prisma.business.count({ where: { employerId: user.id } }),
       prisma.businessEmployee.count({ where: { employeeId: user.id } }),
     ]);
-    const isEmployer = businessCount > 0;
+    const isEmployer = user.role === "employer" || businessCount > 0;
     const isEmployee = employeeLinkCount > 0;
     const profile = {
       id: user.id,

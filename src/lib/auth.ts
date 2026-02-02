@@ -27,7 +27,8 @@ export const authOptions: AuthOptions = {
           prisma.business.count({ where: { employerId: user.id } }),
           prisma.businessEmployee.count({ where: { employeeId: user.id } }),
         ]);
-        const isEmployer = businessCount > 0;
+        // Treat as employer if they signed up as employer (role) or own any business
+        const isEmployer = user.role === "employer" || businessCount > 0;
         const isEmployee = employeeLinkCount > 0;
         return {
           id: user.id,
