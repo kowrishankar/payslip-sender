@@ -8,11 +8,19 @@ import { useRouter } from "next/navigation";
 interface Business {
   id: string;
   name: string;
+  logoUrl?: string;
+  logoPath?: string;
   payCycle?: string;
   payDayOfWeek?: number;
   payDayOfMonth?: number;
   createdAt: string;
 }
+
+const ChevronRightIcon = ({ className }: { className?: string }) => (
+  <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden>
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+  </svg>
+);
 
 interface BusinessListClientProps {
   userName: string;
@@ -143,21 +151,40 @@ export default function BusinessListClient({ userName }: BusinessListClientProps
         </div>
       ) : (
         <ul className="space-y-4">
-          {businesses.map((b) => (
-            <li key={b.id}>
-              <Link
-                href={`/dashboard/${b.id}`}
-                className="block rounded-2xl border border-cyan-200/80 bg-white p-5 hover:border-cyan-300 hover:bg-cyan-50/50 hover:shadow-lg hover:shadow-cyan-500/10 transition-all text-base"
-              >
-                <p className="font-medium text-slate-800 text-lg">{b.name}</p>
-                {b.payCycle && (
-                  <p className="text-base text-slate-600 mt-1">
-                    Pay: {b.payCycle === "weekly" ? `Weekly (day ${b.payDayOfWeek})` : `Monthly (day ${b.payDayOfMonth})`}
-                  </p>
-                )}
-              </Link>
-            </li>
-          ))}
+          {businesses.map((b) => {
+            const logoSrc = b.logoPath
+              ? `/api/businesses/${b.id}/logo`
+              : b.logoUrl || null;
+            return (
+              <li key={b.id}>
+                <Link
+                  href={`/dashboard/${b.id}`}
+                  className="flex items-center gap-4 rounded-2xl border border-cyan-200/80 bg-white p-5 hover:border-cyan-300 hover:bg-cyan-50/50 hover:shadow-lg hover:shadow-cyan-500/10 transition-all text-base"
+                >
+                  {logoSrc ? (
+                    <img
+                      src={logoSrc}
+                      alt=""
+                      className="h-14 w-14 shrink-0 rounded-xl border border-slate-200 bg-white object-contain p-1"
+                    />
+                  ) : (
+                    <div className="h-14 w-14 shrink-0 rounded-xl border border-slate-200 bg-slate-100 flex items-center justify-center text-slate-400 text-xl font-semibold">
+                      {b.name.charAt(0).toUpperCase()}
+                    </div>
+                  )}
+                  <div className="min-w-0 flex-1">
+                    <p className="font-medium text-slate-800 text-lg">{b.name}</p>
+                    {b.payCycle && (
+                      <p className="text-base text-slate-600 mt-0.5">
+                        Pay: {b.payCycle === "weekly" ? `Weekly (day ${b.payDayOfWeek})` : `Monthly (day ${b.payDayOfMonth})`}
+                      </p>
+                    )}
+                  </div>
+                  <ChevronRightIcon className="w-5 h-5 text-slate-400 shrink-0" />
+                </Link>
+              </li>
+            );
+          })}
         </ul>
       )}
     </div>

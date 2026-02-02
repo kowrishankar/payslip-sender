@@ -18,6 +18,8 @@ export async function GET(req: NextRequest) {
       businesses.map((b) => ({
         id: b.id,
         name: b.name,
+        logoUrl: b.logoUrl ?? undefined,
+        logoPath: b.logoPath ?? undefined,
         payCycle: b.payCycle ?? undefined,
         payDayOfWeek: b.payDayOfWeek ?? undefined,
         payDayOfMonth: b.payDayOfMonth ?? undefined,

@@ -6,6 +6,7 @@ import Link from "next/link";
 import AddEmployeeForm from "@/components/AddEmployeeForm";
 import EmployeeList from "@/components/EmployeeList";
 import SendPayslipForm from "@/components/SendPayslipForm";
+import BulkSendPayslipForm from "@/components/BulkSendPayslipForm";
 import EditEmployeeForm from "@/components/EditEmployeeForm";
 import SendCustomEmailForm from "@/components/SendCustomEmailForm";
 import PayslipsSentList from "@/components/PayslipsSentList";
@@ -68,6 +69,7 @@ export default function BusinessDetailClient({
   const [activePanel, setActivePanel] = useState<ActivePanel>(null);
   const [dashboardOpen, setDashboardOpen] = useState(true);
   const [showAddEmployeeModal, setShowAddEmployeeModal] = useState(false);
+  const [showBulkSendModal, setShowBulkSendModal] = useState(false);
 
   const onSuccess = useCallback(() => {
     setRefreshTrigger((n) => n + 1);
@@ -123,7 +125,7 @@ export default function BusinessDetailClient({
 
       {/* Top action buttons */}
       <div className="max-w-[1920px] mx-auto py-5">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <button
             type="button"
             onClick={() => setActivePanel(activePanel === "business" ? null : "business")}
@@ -153,11 +155,18 @@ export default function BusinessDetailClient({
           >
             Add Employee
           </button>
+          <button
+            type="button"
+            onClick={() => setShowBulkSendModal(true)}
+            className="rounded-xl border border-slate-200 bg-white px-5 py-4 text-left text-base font-medium text-slate-800 shadow-card hover:border-cyan-200 hover:bg-cyan-50/50 transition-all"
+          >
+            Bulk send &amp; schedule payslips
+          </button>
         </div>
 
         {/* Expanded panel content below buttons */}
         {activePanel === "business" && (
-          <div className="mt-5 rounded-xl border border-slate-200 bg-white p-6 text-base shadow-card">
+          <div className="mt-5 rounded-xl border border-slate-200 bg-white p-6 sm:p-8 text-base shadow-card">
             <BusinessSettings
               businessId={businessId}
               businessName={businessName}
@@ -166,13 +175,14 @@ export default function BusinessDetailClient({
               businessLogoPath={businessLogoPath}
               onUpdate={onSuccess}
             />
-            <div className="mt-6 pt-6 border-t border-slate-200">
+            <div className="mt-10 pt-8 border-t border-slate-200">
               <PayReminder
                 businessId={businessId}
                 payCycle={payCycle}
                 payDayOfWeek={payDayOfWeek}
                 payDayOfMonth={payDayOfMonth}
                 onUpdate={onSuccess}
+                embedded
               />
             </div>
           </div>
@@ -282,6 +292,16 @@ export default function BusinessDetailClient({
           employee={employeeForEmail}
           onClose={() => setEmployeeForEmail(null)}
           onSuccess={onSuccess}
+        />
+      )}
+      {showBulkSendModal && (
+        <BulkSendPayslipForm
+          businessId={businessId}
+          onClose={() => setShowBulkSendModal(false)}
+          onSuccess={() => {
+            onSuccess();
+            setShowBulkSendModal(false);
+          }}
         />
       )}
     </div>

@@ -22,10 +22,12 @@ model User {
   createdAt          DateTime  @default(now())
   updatedAt          DateTime  @updatedAt
 
-  businessesOwned    Business[]         @relation("BusinessOwner")
-  employeeBusinesses BusinessEmployee[] @relation("Employee")
-  payslipsSent       Payslip[]          @relation("EmployerPayslips")
-  payslipsReceived   Payslip[]          @relation("EmployeePayslips")
+  businessesOwned       Business[]          @relation("BusinessOwner")
+  employeeBusinesses    BusinessEmployee[]  @relation("Employee")
+  payslipsSent          Payslip[]           @relation("EmployerPayslips")
+  payslipsReceived           Payslip[]           @relation("EmployeePayslips")
+  scheduledPayslipsSent       ScheduledPayslip[]  @relation("EmployerScheduledPayslips")
+  scheduledPayslipsReceived   ScheduledPayslip[]  @relation("EmployeeScheduledPayslips")
 }
 
 model Business {
@@ -40,9 +42,10 @@ model Business {
   payDayOfMonth   Int?     // 1-31 (for monthly)
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
-  employer        User     @relation("BusinessOwner", fields: [employerId], references: [id], onDelete: Cascade)
-  employees       BusinessEmployee[] @relation("BusinessEmployees")
-  payslips        Payslip[]          @relation("BusinessPayslips")
+  employer           User               @relation("BusinessOwner", fields: [employerId], references: [id], onDelete: Cascade)
+  employees          BusinessEmployee[] @relation("BusinessEmployees")
+  payslips           Payslip[]          @relation("BusinessPayslips")
+  scheduledPayslips  ScheduledPayslip[] @relation("ScheduledPayslips")
 }
 
 model BusinessEmployee {
@@ -71,4 +74,23 @@ model Payslip {
   business     Business? @relation("BusinessPayslips", fields: [businessId], references: [id], onDelete: Cascade)
   employer     User     @relation("EmployerPayslips", fields: [employerId], references: [id], onDelete: Cascade)
   employee     User     @relation("EmployeePayslips", fields: [employeeId], references: [id], onDelete: Cascade)
+}
+
+model ScheduledPayslip {
+  id           String   @id @default(cuid())
+  fileName     String
+  filePath     String   // blob URL or relative path; used when processing
+  emailMessage String?
+  amountCents  Int?
+  businessId   String
+  employerId   String
+  employeeId   String
+  scheduledAt  DateTime // when to send
+  status       String   // pending | sent | failed
+  sentAt       DateTime? // when actually sent
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  business     Business @relation("ScheduledPayslips", fields: [businessId], references: [id], onDelete: Cascade)
+  employer     User     @relation("EmployerScheduledPayslips", fields: [employerId], references: [id], onDelete: Cascade)
+  employee     User     @relation("EmployeeScheduledPayslips", fields: [employeeId], references: [id], onDelete: Cascade)
 }

@@ -55,7 +55,7 @@ export async function GET(req: NextRequest) {
           employeeName: p.employee.name,
           employeeEmail: p.employee.email,
           emailMessage: p.emailMessage ?? undefined,
-          amountCents: p.amountCents ?? undefined,
+          amountCents: (p as { amountCents?: number | null }).amountCents ?? undefined,
           createdAt: p.createdAt.toISOString(),
         }))
       );
@@ -151,10 +151,10 @@ export async function POST(req: NextRequest) {
         fileName,
         filePath,
         emailMessage,
-        amountCents: amountCents ?? undefined,
         businessId,
         employerId: token.sub,
         employeeId,
+        ...(amountCents != null && { amountCents }),
       },
     });
 
