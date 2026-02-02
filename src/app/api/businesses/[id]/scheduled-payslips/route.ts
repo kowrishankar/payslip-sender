@@ -29,11 +29,22 @@ export async function GET(
       return NextResponse.json({ error: "Business not found" }, { status: 404 });
     }
     const now = new Date();
-    const list = await prisma.scheduledPayslip.findMany({
-      where: { businessId, status: "pending", scheduledAt: { gt: now } },
-      include: { employee: { select: { id: true, name: true, email: true } } },
-      orderBy: { scheduledAt: "asc" },
-    });
+    type ScheduledWithEmployee = { id: string; fileName: string; emailMessage: string | null; amountCents?: number | null; scheduledAt: Date; employeeId: string; employee: { id: string; name: string; email: string } };
+    let list: ScheduledWithEmployee[];
+    try {
+      list = await (prisma as unknown as { scheduledPayslip: { findMany: (args: unknown) => Promise<ScheduledWithEmployee[]> } }).scheduledPayslip.findMany({
+        where: { businessId, status: "pending", scheduledAt: { gt: now } },
+        include: { employee: { select: { id: true, name: true, email: true } } },
+        orderBy: { scheduledAt: "asc" },
+      });
+    } catch (dbError: unknown) {
+      // Table might not exist yet (e.g. migration not run on production)
+      const code = (dbError as { code?: string })?.code;
+      if (code === "P2021" || (typeof (dbError as Error).message === "string" && (dbError as Error).message?.includes("does not exist"))) {
+        return NextResponse.json([]);
+      }
+      throw dbError;
+    }
     return NextResponse.json(
       list.map((sp) => ({
         id: sp.id,
