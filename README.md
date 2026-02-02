@@ -74,18 +74,27 @@ A web application that lets you manage employees and **send payslips via email**
 - For production, use HTTPS, restrict access (e.g. login), and consider a proper database and file storage (e.g. S3) for payslips.
 - The app does not store payslip files; they are streamed to the email and not saved on the server.
 
-## Vercel / Production migrations (Neon)
+## Vercel / Production (Neon)
 
-The Vercel build runs `prisma migrate deploy` so migrations apply on each deploy. If you see **P3005** (“The database schema is not empty”), Neon already has tables but no migration history. Baseline it **once** from your machine:
+### Create tables on Neon (first-time)
+
+If you see **"The table \`public.User\` does not exist"** in production, create the tables on Neon **once** from your machine. Use the same `DATABASE_URL` as in Vercel (Neon connection string):
 
 ```bash
-# Use the same DATABASE_URL as in Vercel (your Neon connection string)
-DATABASE_URL="postgresql://USER:PASSWORD@ep-xxx-pooler.region.aws.neon.tech/neondb?sslmode=require" npm run db:baseline
+DATABASE_URL="postgresql://USER:PASSWORD@ep-xxx-pooler.region.aws.neon.tech/neondb?sslmode=require" npm run db:push:production
 ```
 
-Or: `DATABASE_URL="your-neon-url" npx prisma migrate resolve --applied "20250130120000_init"`
+Replace with your real Neon user, password, and URL (from Vercel → Project → Settings → Environment Variables → `DATABASE_URL`). This runs `prisma db push` and creates all tables (User, Business, etc.) on Neon.
 
-Then commit, push, and redeploy. The build will succeed and future deploys will run new migrations automatically.
+### Migrations and P3005
+
+The Vercel build runs `prisma migrate deploy` so migrations apply on each deploy. If you see **P3005** (“The database schema is not empty”), baseline Neon **once**:
+
+```bash
+DATABASE_URL="postgresql://..." npm run db:baseline
+```
+
+Then redeploy so the build succeeds.
 
 ## License
 
