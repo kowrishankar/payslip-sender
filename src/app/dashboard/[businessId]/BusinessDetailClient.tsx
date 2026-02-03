@@ -14,6 +14,7 @@ import ScheduledPayslipsList from "@/components/ScheduledPayslipsList";
 import PayReminder from "@/components/PayReminder";
 import BusinessSettings from "@/components/BusinessSettings";
 import BusinessDashboardStats from "@/components/BusinessDashboardStats";
+import { IconCog, IconList, IconPlus, IconDocument, IconLogout, IconHome } from "@/components/Icons";
 import type { Employee } from "@/components/EmployeeList";
 
 const barChartIcon = (
@@ -98,33 +99,36 @@ export default function BusinessDetailClient({
             <div className="min-w-0">
               <Link
                 href="/dashboard"
-                className="text-base text-cyan-600 hover:text-cyan-700 transition-colors block font-medium"
+                className="text-lg text-cyan-600 hover:text-cyan-700 transition-colors block font-medium"
               >
                 ← All businesses
               </Link>
-              <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 truncate mt-1">
+              <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 truncate mt-1 uppercase tracking-wide">
                 {businessName}
               </h1>
               {businessAddress && (
-                <p className="text-slate-700 text-base truncate mt-0.5">{businessAddress}</p>
+                <p className="text-slate-700 text-lg truncate mt-0.5">{businessAddress}</p>
               )}
             </div>
           </div>
           <div className="flex items-center gap-5 shrink-0 flex-wrap">
-            <span className="text-slate-800 text-base font-medium">{userName}</span>
+            <span className="text-slate-800 text-lg font-medium">{userName}</span>
             {isEmployee && (
-              <Link href="/my-payslips" className="text-base text-slate-600 hover:text-cyan-600 transition-colors py-2 px-3 rounded-xl hover:bg-cyan-50 font-medium">
+              <Link href="/my-payslips" className="inline-flex items-center gap-1.5 text-lg text-slate-600 hover:text-cyan-600 transition-colors py-2 px-3 rounded-xl hover:bg-cyan-50 font-medium uppercase tracking-wide">
+                <IconDocument className="w-4 h-4" />
                 My payslips
               </Link>
             )}
-            <Link href="/" className="text-base text-slate-600 hover:text-cyan-600 transition-colors py-2 px-3 rounded-xl hover:bg-cyan-50 font-medium">
+            <Link href="/" className="inline-flex items-center gap-1.5 text-lg text-slate-600 hover:text-cyan-600 transition-colors py-2 px-3 rounded-xl hover:bg-cyan-50 font-medium uppercase tracking-wide">
+              <IconHome className="w-4 h-4" />
               Home
             </Link>
             <button
               type="button"
               onClick={() => signOut({ callbackUrl: "/" })}
-              className="text-base text-slate-600 hover:text-rose-500 transition-colors py-2 px-3 rounded-lg hover:bg-rose-50 font-medium"
+              className="inline-flex items-center gap-1.5 text-lg text-slate-600 hover:text-rose-500 transition-colors py-2 px-3 rounded-lg hover:bg-rose-50 font-medium uppercase tracking-wide"
             >
+              <IconLogout className="w-4 h-4" />
               Sign out
             </button>
           </div>
@@ -137,44 +141,48 @@ export default function BusinessDetailClient({
           <button
             type="button"
             onClick={() => setActivePanel(activePanel === "business" ? null : "business")}
-            className={`rounded-xl border px-5 py-4 text-left text-base font-medium transition-all shadow-card ${
+            className={`rounded-xl border px-5 py-4 text-left text-lg font-medium transition-all shadow-card inline-flex items-center gap-3 ${
               activePanel === "business"
                 ? "border-cyan-400 bg-cyan-50 text-cyan-800 shadow-card-hover"
                 : "border-slate-200 bg-white text-slate-800 hover:border-cyan-200 hover:bg-cyan-50/50"
             }`}
           >
+            <IconCog className="w-5 h-5" />
             Manage Business Details
           </button>
           <button
             type="button"
             onClick={() => setActivePanel(activePanel === "payslips" ? null : "payslips")}
-            className={`rounded-xl border px-5 py-4 text-left text-base font-medium transition-all shadow-card ${
+            className={`rounded-xl border px-5 py-4 text-left text-lg font-medium transition-all shadow-card inline-flex items-center gap-3 ${
               activePanel === "payslips"
                 ? "border-cyan-400 bg-cyan-50 text-cyan-800 shadow-card-hover"
                 : "border-slate-200 bg-white text-slate-800 hover:border-cyan-200 hover:bg-cyan-50/50"
             }`}
           >
+            <IconList className="w-5 h-5" />
             View Previous Payslips
           </button>
           <button
             type="button"
             onClick={() => setShowAddEmployeeModal(true)}
-            className="rounded-xl border border-slate-200 bg-white px-5 py-4 text-left text-base font-medium text-slate-800 shadow-card hover:border-cyan-200 hover:bg-cyan-50/50 transition-all"
+            className="rounded-xl border border-slate-200 bg-white px-5 py-4 text-left text-lg font-medium text-slate-800 shadow-card hover:border-cyan-200 hover:bg-cyan-50/50 transition-all uppercase tracking-wide inline-flex items-center gap-3"
           >
+            <IconPlus className="w-5 h-5" />
             Add Employee
           </button>
           <button
             type="button"
             onClick={() => setShowBulkSendModal(true)}
-            className="rounded-xl border border-slate-200 bg-white px-5 py-4 text-left text-base font-medium text-slate-800 shadow-card hover:border-cyan-200 hover:bg-cyan-50/50 transition-all"
+            className="rounded-xl border border-slate-200 bg-white px-5 py-4 text-left text-lg font-medium text-slate-800 shadow-card hover:border-cyan-200 hover:bg-cyan-50/50 transition-all uppercase tracking-wide inline-flex items-center gap-3"
           >
+            <IconDocument className="w-5 h-5" />
             Bulk send &amp; schedule payslips
           </button>
         </div>
 
         {/* Expanded panel content below buttons */}
         {activePanel === "business" && (
-          <div className="mt-5 rounded-xl border border-slate-200 bg-white p-6 sm:p-8 text-base shadow-card">
+          <div className="mt-5 rounded-xl border border-slate-200 bg-white p-6 sm:p-8 text-lg shadow-card">
             <BusinessSettings
               businessId={businessId}
               businessName={businessName}
@@ -196,7 +204,7 @@ export default function BusinessDetailClient({
           </div>
         )}
         {activePanel === "payslips" && (
-          <div className="mt-5 rounded-xl border border-slate-200 bg-white p-6 text-base shadow-card">
+          <div className="mt-5 rounded-xl border border-slate-200 bg-white p-6 text-lg shadow-card">
             <PayslipsSentList businessId={businessId} refreshTrigger={refreshTrigger} />
           </div>
         )}
@@ -215,7 +223,7 @@ export default function BusinessDetailClient({
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm">
           <div className="w-full max-w-md rounded-2xl border border-cyan-200/80 bg-white shadow-xl shadow-cyan-500/10 p-6 max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-slate-800">Add employee</h3>
+              <h3 className="text-lg font-semibold text-slate-800 uppercase tracking-wide">Add employee</h3>
               <button
                 type="button"
                 onClick={() => setShowAddEmployeeModal(false)}
@@ -246,7 +254,7 @@ export default function BusinessDetailClient({
               <button
                 type="button"
                 onClick={() => setDashboardOpen(!dashboardOpen)}
-                className="w-full flex items-center justify-between gap-4 px-6 py-5 text-left bg-slate-50 hover:bg-cyan-50/50 transition-colors text-base"
+                className="w-full flex items-center justify-between gap-4 px-6 py-5 text-left bg-slate-50 hover:bg-cyan-50/50 transition-colors text-lg"
                 aria-expanded={dashboardOpen}
               >
                 <span className="flex items-center gap-3 font-semibold text-slate-800 text-lg">
@@ -257,7 +265,7 @@ export default function BusinessDetailClient({
               </button>
               {dashboardOpen && (
                 <div className="border-t border-slate-200 p-6 bg-white">
-                  <p className="text-slate-700 text-base mb-5 font-medium">Recent updates & payment metrics</p>
+                  <p className="text-slate-700 text-lg mb-5 font-medium">Recent updates & payment metrics</p>
                   <BusinessDashboardStats businessId={businessId} refreshTrigger={refreshTrigger} />
                 </div>
               )}
@@ -267,7 +275,7 @@ export default function BusinessDetailClient({
           {/* Right: Table list of employees (same colours & fonts as dashboard) */}
           <div className="lg:col-span-1">
             <div className="rounded-xl border border-slate-200 bg-white overflow-hidden sticky top-24 shadow-card">
-<h3 className="text-slate-900 font-semibold text-xl px-5 py-4 border-b border-slate-200 bg-slate-50">
+<h3 className="text-slate-900 font-semibold text-2xl px-5 py-4 border-b border-slate-200 bg-slate-50 uppercase tracking-wide">
                   Table list of employees
               </h3>
               <div className="p-0 min-h-[200px]">

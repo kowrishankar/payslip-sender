@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { IconX, IconCheck, IconTrash } from "@/components/Icons";
 
 interface BusinessSettingsProps {
   businessId: string;
@@ -13,7 +14,7 @@ interface BusinessSettingsProps {
 }
 
 const sectionTitleClass =
-  "text-xl font-semibold text-slate-900 mb-4 pb-2 border-b border-slate-200";
+  "text-xl font-semibold text-slate-900 mb-4 pb-2 border-b border-slate-200 uppercase tracking-wide";
 
 const PencilIcon = ({ className }: { className?: string }) => (
   <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden>
@@ -140,14 +141,14 @@ export default function BusinessSettings({
     <div className="space-y-8">
       {/* Intro */}
       <div>
-        <h2 className="text-2xl font-semibold text-slate-900">Manage Business Details</h2>
+        <h2 className="text-2xl font-semibold text-slate-900 uppercase tracking-wide">Manage Business Details</h2>
         <p className="text-slate-600 text-lg mt-1">
           Update your business name, branding, and pay schedule.
         </p>
       </div>
 
       {error && (
-        <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-red-800 text-base font-medium">
+        <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-red-800 text-lg font-medium">
           {error}
         </div>
       )}
@@ -164,7 +165,7 @@ export default function BusinessSettings({
                 setEditName(businessName);
                 setShowEditName(true);
               }}
-              className="inline-flex items-center gap-2 text-base font-medium text-cyan-600 hover:text-cyan-700 hover:underline"
+              className="inline-flex items-center gap-2 text-lg font-medium text-cyan-600 hover:text-cyan-700 hover:underline uppercase tracking-wide"
             >
               <PencilIcon className="w-5 h-5 shrink-0" />
               Edit name
@@ -180,7 +181,7 @@ export default function BusinessSettings({
                 onChange={(e) => setEditName(e.target.value)}
                 required
                 autoFocus
-                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-slate-900 text-base focus:ring-2 focus:ring-cyan-400 focus:border-cyan-400"
+                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-slate-900 text-lg focus:ring-2 focus:ring-cyan-400 focus:border-cyan-400"
                 placeholder="Business name"
               />
             </label>
@@ -188,15 +189,17 @@ export default function BusinessSettings({
               <button
                 type="button"
                 onClick={() => setShowEditName(false)}
-                className="px-4 py-2.5 rounded-xl border border-slate-200 text-slate-700 hover:bg-slate-100 font-medium text-base"
+                className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl border border-slate-200 text-slate-700 hover:bg-slate-100 font-medium text-lg uppercase tracking-wide"
               >
+                <IconX className="w-4 h-4" />
                 Cancel
               </button>
               <button
                 type="submit"
                 disabled={loading}
-                className="px-4 py-2.5 rounded-xl bg-cyan-500 hover:bg-cyan-600 text-white font-medium text-base disabled:opacity-50"
+                className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-cyan-500 hover:bg-cyan-600 text-white font-medium text-lg uppercase tracking-wide disabled:opacity-50"
               >
+                <IconCheck className="w-4 h-4" />
                 {loading ? "Saving…" : "Save"}
               </button>
             </div>
@@ -217,13 +220,13 @@ export default function BusinessSettings({
                     alt=""
                     className="h-10 w-auto object-contain rounded border border-slate-200 bg-white p-1"
                   />
-                  <span className="text-base text-slate-500">Logo set</span>
+                  <span className="text-lg text-slate-500">Logo set</span>
                 </div>
               )}
               {!logoSrc && (
-                <p className="text-slate-500 text-base">No logo</p>
+                <p className="text-slate-500 text-lg">No logo</p>
               )}
-              <p className="text-slate-700 text-base mt-1">
+              <p className="text-slate-700 text-lg mt-1">
                 {businessAddress?.trim() ? (
                   <span className="line-clamp-2">{businessAddress.trim()}</span>
                 ) : (
@@ -234,7 +237,7 @@ export default function BusinessSettings({
             <button
               type="button"
               onClick={() => setShowEditBranding(true)}
-              className="inline-flex items-center gap-2 text-base font-medium text-cyan-600 hover:text-cyan-700 hover:underline shrink-0"
+              className="inline-flex items-center gap-2 text-lg font-medium text-cyan-600 hover:text-cyan-700 hover:underline shrink-0"
             >
               <PencilIcon className="w-5 h-5 shrink-0" />
               Edit branding
@@ -244,7 +247,7 @@ export default function BusinessSettings({
           <form onSubmit={handleSaveBranding} className="space-y-5">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <div className="rounded-xl border border-slate-200 bg-slate-50/50 p-5">
-                <p className="text-base font-medium text-slate-800 mb-3">Logo</p>
+                <p className="text-lg font-medium text-slate-800 mb-3">Logo</p>
                 {logoSrc && (
                   <div className="mb-4 flex items-center gap-3">
                     <img
@@ -275,14 +278,14 @@ export default function BusinessSettings({
                 </div>
               </div>
               <div className="rounded-xl border border-slate-200 bg-slate-50/50 p-5">
-                <label className="block text-base font-medium text-slate-800 mb-3">
+                <label className="block text-lg font-medium text-slate-800 mb-3">
                   Business address
                 </label>
                 <textarea
                   value={address}
                   onChange={(e) => setAddress(e.target.value)}
                   rows={4}
-                  className="w-full bg-white border border-slate-200 rounded-lg px-3 py-2.5 text-slate-900 text-base placeholder-slate-400 resize-y focus:ring-2 focus:ring-cyan-400 focus:border-cyan-400"
+                  className="w-full bg-white border border-slate-200 rounded-lg px-3 py-2.5 text-slate-900 text-lg placeholder-slate-400 resize-y focus:ring-2 focus:ring-cyan-400 focus:border-cyan-400"
                   placeholder="e.g. 123 High Street, London"
                 />
               </div>
@@ -291,15 +294,17 @@ export default function BusinessSettings({
               <button
                 type="button"
                 onClick={() => setShowEditBranding(false)}
-                className="px-4 py-2.5 rounded-xl border border-slate-200 text-slate-700 hover:bg-slate-100 font-medium text-base"
+                className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl border border-slate-200 text-slate-700 hover:bg-slate-100 font-medium text-lg uppercase tracking-wide"
               >
+                <IconX className="w-4 h-4" />
                 Cancel
               </button>
               <button
                 type="submit"
                 disabled={loading}
-                className="px-4 py-2.5 rounded-xl bg-cyan-500 hover:bg-cyan-600 text-white font-medium text-base disabled:opacity-50"
+                className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-cyan-500 hover:bg-cyan-600 text-white font-medium text-lg uppercase tracking-wide disabled:opacity-50"
               >
+                <IconCheck className="w-4 h-4" />
                 {loading ? "Saving…" : "Save branding"}
               </button>
             </div>
@@ -309,7 +314,7 @@ export default function BusinessSettings({
 
       {/* Danger zone */}
       <section className="pt-6 border-t border-slate-200">
-        <h3 className="text-lg font-semibold text-slate-900 mb-2">Danger zone</h3>
+        <h3 className="text-lg font-semibold text-slate-900 mb-2 uppercase tracking-wide">Danger zone</h3>
         <p className="text-slate-600 text-sm mb-4">
           Deleting this business will remove all staff links and payslip history. This cannot be
           undone.
@@ -318,29 +323,32 @@ export default function BusinessSettings({
           <button
             type="button"
             onClick={() => setShowDeleteConfirm(true)}
-            className="px-4 py-2.5 rounded-xl border border-red-200 text-red-700 hover:bg-red-50 font-medium text-base transition-colors"
+            className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl border border-red-200 text-red-700 hover:bg-red-50 font-medium text-lg uppercase tracking-wide transition-colors"
           >
+            <IconTrash className="w-4 h-4" />
             Delete this business
           </button>
         ) : (
           <div className="inline-flex flex-wrap items-center gap-3 p-4 rounded-xl border border-red-200 bg-red-50/80">
-            <span className="text-slate-800 text-base font-medium">
+            <span className="text-slate-800 text-lg font-medium">
               Are you sure? This action cannot be undone.
             </span>
             <div className="flex gap-2">
               <button
                 type="button"
                 onClick={() => setShowDeleteConfirm(false)}
-                className="px-3 py-2 rounded-lg border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 font-medium text-sm"
+                className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 font-medium text-sm uppercase tracking-wide"
               >
+                <IconX className="w-4 h-4" />
                 Cancel
               </button>
               <button
                 type="button"
                 onClick={handleDelete}
                 disabled={loading}
-                className="px-3 py-2 rounded-lg bg-red-600 hover:bg-red-700 text-white font-medium text-sm disabled:opacity-50"
+                className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg bg-red-600 hover:bg-red-700 text-white font-medium text-sm disabled:opacity-50 uppercase tracking-wide"
               >
+                <IconTrash className="w-4 h-4" />
                 {loading ? "Deleting…" : "Yes, delete"}
               </button>
             </div>

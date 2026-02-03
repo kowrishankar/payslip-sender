@@ -215,7 +215,7 @@ export async function POST(req: NextRequest) {
             businessId,
             employerId: token.sub,
             employeeId,
-          },
+          } as Parameters<typeof prisma.payslip.create>[0]["data"],
         });
 
         let emailSent = false;

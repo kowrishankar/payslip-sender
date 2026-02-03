@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { IconX, IconPlus } from "@/components/Icons";
 
 interface AddEmployeeFormProps {
   businessId?: string;
@@ -68,12 +69,12 @@ export default function AddEmployeeForm({ businessId, onSuccess, onClose }: AddE
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       {error && (
-        <p className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg px-3 py-2">
+        <p className="text-base text-red-600 bg-red-50 border border-red-200 rounded-lg px-3 py-2">
           {error}
         </p>
       )}
       <div>
-        <label htmlFor="name" className="block text-sm font-medium text-slate-700 mb-1">
+        <label htmlFor="name" className="block text-base font-medium uppercase tracking-wide text-slate-700 mb-1">
           Name
         </label>
         <input
@@ -87,7 +88,7 @@ export default function AddEmployeeForm({ businessId, onSuccess, onClose }: AddE
         />
       </div>
       <div>
-        <label htmlFor="email" className="block text-sm font-medium text-slate-700 mb-1">
+        <label htmlFor="email" className="block text-base font-medium uppercase tracking-wide text-slate-700 mb-1">
           Email
         </label>
         <input
@@ -101,7 +102,7 @@ export default function AddEmployeeForm({ businessId, onSuccess, onClose }: AddE
         />
       </div>
       <div>
-        <label htmlFor="department" className="block text-sm font-medium text-slate-700 mb-1">
+        <label htmlFor="department" className="block text-base font-medium uppercase tracking-wide text-slate-700 mb-1">
           Department (optional)
         </label>
         <input
@@ -114,7 +115,7 @@ export default function AddEmployeeForm({ businessId, onSuccess, onClose }: AddE
         />
       </div>
       <div>
-        <label htmlFor="startDate" className="block text-sm font-medium text-slate-700 mb-1">
+        <label htmlFor="startDate" className="block text-base font-medium uppercase tracking-wide text-slate-700 mb-1">
           Start date (optional)
         </label>
         <input
@@ -126,7 +127,7 @@ export default function AddEmployeeForm({ businessId, onSuccess, onClose }: AddE
         />
       </div>
       <div>
-        <label htmlFor="address" className="block text-sm font-medium text-slate-700 mb-1">
+        <label htmlFor="address" className="block text-base font-medium uppercase tracking-wide text-slate-700 mb-1">
           Address (optional)
         </label>
         <input
@@ -139,7 +140,7 @@ export default function AddEmployeeForm({ businessId, onSuccess, onClose }: AddE
         />
       </div>
       <div>
-        <label htmlFor="contactNumber" className="block text-sm font-medium text-slate-700 mb-1">
+        <label htmlFor="contactNumber" className="block text-base font-medium uppercase tracking-wide text-slate-700 mb-1">
           Contact number (optional)
         </label>
         <input
@@ -152,7 +153,7 @@ export default function AddEmployeeForm({ businessId, onSuccess, onClose }: AddE
         />
       </div>
       <div className="border-t border-slate-200 pt-4">
-        <p className="text-sm font-medium text-slate-300 mb-3">How are they paid? (optional)</p>
+        <p className="text-base font-medium uppercase tracking-wide text-slate-300 mb-3">How are they paid? (optional)</p>
         <div className="flex gap-4 mb-3">
           <label className="flex items-center gap-2 cursor-pointer">
             <input
@@ -187,7 +188,7 @@ export default function AddEmployeeForm({ businessId, onSuccess, onClose }: AddE
         </div>
         {payCycle === "weekly" && (
           <div className="mb-3">
-            <label htmlFor="add-payDayOfWeek" className="block text-sm text-slate-600 mb-1">Pay day (week)</label>
+            <label htmlFor="add-payDayOfWeek" className="block text-base text-slate-600 mb-1">Pay day (week)</label>
             <select
               id="add-payDayOfWeek"
               value={payDayOfWeek}
@@ -202,7 +203,7 @@ export default function AddEmployeeForm({ businessId, onSuccess, onClose }: AddE
         )}
         {payCycle === "monthly" && (
           <div>
-            <label htmlFor="add-payDayOfMonth" className="block text-sm text-slate-600 mb-1">Pay day (month, 1–31)</label>
+            <label htmlFor="add-payDayOfMonth" className="block text-base text-slate-600 mb-1">Pay day (month, 1–31)</label>
             <input
               id="add-payDayOfMonth"
               type="number"
@@ -220,16 +221,18 @@ export default function AddEmployeeForm({ businessId, onSuccess, onClose }: AddE
           <button
             type="button"
             onClick={onClose}
-            className="flex-1 py-2 px-4 rounded-lg border border-slate-200 text-slate-700 hover:bg-slate-100 transition-colors"
+            className="flex-1 py-2 px-4 rounded-lg border border-slate-200 text-slate-700 hover:bg-slate-100 transition-colors inline-flex items-center justify-center gap-1.5"
           >
+            <IconX className="w-4 h-4" />
             Cancel
           </button>
         )}
         <button
           type="submit"
           disabled={loading}
-          className={`${onClose ? "flex-1" : "w-full"} bg-cyan-500 hover:bg-cyan-600 text-white font-medium py-2 px-4 rounded-xl transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-md shadow-cyan-500/25`}
+          className={`${onClose ? "flex-1" : "w-full"} bg-cyan-500 hover:bg-cyan-600 text-white font-medium uppercase tracking-wide py-2 px-4 rounded-xl transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-md shadow-cyan-500/25 inline-flex items-center justify-center gap-1.5`}
         >
+          <IconPlus className="w-4 h-4" />
           {loading ? "Adding…" : "Add employee"}
         </button>
       </div>

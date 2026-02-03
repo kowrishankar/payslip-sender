@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { signOut } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { IconX, IconPlus, IconDocument, IconHome, IconLogout } from "@/components/Icons";
 
 interface Business {
   id: string;
@@ -73,27 +74,30 @@ export default function BusinessListClient({ userName, isEmployee = false }: Bus
   }
 
   return (
-    <div className="w-full py-10 text-base">
+    <div className="w-full py-10 text-lg">
       <header className="flex flex-wrap items-center justify-between gap-5 mb-10">
         <div>
-          <h1 className="text-3xl font-bold text-slate-900">Your businesses</h1>
-          <p className="text-slate-700 text-base mt-1">Select a business to manage staff and payslips</p>
+          <h1 className="text-4xl font-bold text-slate-900 uppercase tracking-wide">Your businesses</h1>
+          <p className="text-slate-700 text-lg mt-1">Select a business to manage staff and payslips</p>
         </div>
         <div className="flex items-center gap-4 flex-wrap">
-          <span className="text-slate-700 text-base font-medium">{userName}</span>
+          <span className="text-slate-700 text-lg font-medium">{userName}</span>
           {isEmployee && (
-            <Link href="/my-payslips" className="text-base text-slate-600 hover:text-cyan-600 transition-colors py-2 px-3 rounded-xl hover:bg-cyan-50 font-medium">
+            <Link href="/my-payslips" className="inline-flex items-center gap-1.5 text-lg text-slate-600 hover:text-cyan-600 transition-colors py-2 px-3 rounded-xl hover:bg-cyan-50 font-medium uppercase tracking-wide">
+              <IconDocument className="w-4 h-4" />
               My payslips
             </Link>
           )}
-          <Link href="/" className="text-base text-slate-600 hover:text-cyan-600 transition-colors py-2 px-3 rounded-xl hover:bg-cyan-50 font-medium">
+          <Link href="/" className="inline-flex items-center gap-1.5 text-lg text-slate-600 hover:text-cyan-600 transition-colors py-2 px-3 rounded-xl hover:bg-cyan-50 font-medium uppercase tracking-wide">
+            <IconHome className="w-4 h-4" />
             Home
           </Link>
           <button
             type="button"
             onClick={() => signOut({ callbackUrl: "/" })}
-            className="text-base text-slate-600 hover:text-rose-500 transition-colors py-2 px-3 rounded-xl hover:bg-rose-50 font-medium"
+            className="inline-flex items-center gap-1.5 text-lg text-slate-600 hover:text-rose-500 transition-colors py-2 px-3 rounded-xl hover:bg-rose-50 font-medium uppercase tracking-wide"
           >
+            <IconLogout className="w-4 h-4" />
             Sign out
           </button>
         </div>
@@ -102,12 +106,12 @@ export default function BusinessListClient({ userName, isEmployee = false }: Bus
       {showAdd ? (
         <form
           onSubmit={handleAdd}
-          className="rounded-2xl border border-cyan-200/80 bg-white shadow-xl shadow-cyan-500/10 p-6 mb-6 text-base"
+          className="rounded-2xl border border-cyan-200/80 bg-white shadow-xl shadow-cyan-500/10 p-6 mb-6 text-lg"
         >
           {error && (
-            <p className="text-base text-red-600 bg-red-50 border border-red-200 rounded-lg px-3 py-2 mb-4">{error}</p>
+            <p className="text-lg text-red-600 bg-red-50 border border-red-200 rounded-lg px-3 py-2 mb-4">{error}</p>
           )}
-          <label htmlFor="business-name" className="block text-base font-medium text-slate-700 mb-2">
+          <label htmlFor="business-name" className="block text-lg font-medium text-slate-700 mb-2">
             Business name
           </label>
           <input
@@ -117,21 +121,23 @@ export default function BusinessListClient({ userName, isEmployee = false }: Bus
             onChange={(e) => setNewName(e.target.value)}
             required
             placeholder="e.g. Acme Ltd"
-            className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-800 text-base mb-4 focus:ring-2 focus:ring-cyan-400 focus:border-cyan-400"
+            className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-800 text-lg mb-4 focus:ring-2 focus:ring-cyan-400 focus:border-cyan-400"
           />
           <div className="flex gap-3">
             <button
               type="button"
               onClick={() => { setShowAdd(false); setError(""); }}
-              className="px-5 py-3 rounded-xl border border-slate-200 text-slate-700 hover:bg-slate-100 text-base font-medium"
+              className="inline-flex items-center gap-1.5 px-5 py-3 rounded-xl border border-slate-200 text-slate-700 hover:bg-slate-100 text-lg font-medium uppercase tracking-wide"
             >
+              <IconX className="w-4 h-4" />
               Cancel
             </button>
             <button
               type="submit"
               disabled={adding}
-              className="px-5 py-3 rounded-xl bg-cyan-500 hover:bg-cyan-600 text-white font-medium text-base disabled:opacity-50 min-h-[3rem] shadow-md shadow-cyan-500/25"
+              className="inline-flex items-center gap-1.5 px-5 py-3 rounded-xl bg-cyan-500 hover:bg-cyan-600 text-white font-medium text-lg disabled:opacity-50 min-h-[3rem] shadow-md shadow-cyan-500/25 uppercase tracking-wide"
             >
+              <IconPlus className="w-4 h-4" />
               {adding ? "Creating…" : "Create business"}
             </button>
           </div>
@@ -140,19 +146,17 @@ export default function BusinessListClient({ userName, isEmployee = false }: Bus
         <button
           type="button"
           onClick={() => setShowAdd(true)}
-          className="mb-6 inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-cyan-500 hover:bg-cyan-600 text-white font-medium text-base transition-colors min-h-[3rem] shadow-md shadow-cyan-500/25"
+          className="mb-6 inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-cyan-500 hover:bg-cyan-600 text-white font-medium text-lg transition-colors min-h-[3rem] shadow-md shadow-cyan-500/25 uppercase tracking-wide"
         >
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden>
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5-10v-4a1 1 0 011-1h4a1 1 0 011 1v4M9 7h6" />
-          </svg>
+          <IconPlus className="w-5 h-5" />
           Add business
         </button>
       )}
 
       {loading ? (
-        <div className="text-slate-500 py-10 text-center text-base">Loading…</div>
+        <div className="text-slate-500 py-10 text-center text-lg">Loading…</div>
       ) : businesses.length === 0 ? (
-        <div className="rounded-2xl border border-cyan-200/80 bg-white p-10 text-center text-slate-500 text-base shadow-lg shadow-cyan-500/5">
+        <div className="rounded-2xl border border-cyan-200/80 bg-white p-10 text-center text-slate-500 text-lg shadow-lg shadow-cyan-500/5">
           No businesses yet. Add your first business above.
         </div>
       ) : (
@@ -165,7 +169,7 @@ export default function BusinessListClient({ userName, isEmployee = false }: Bus
               <li key={b.id}>
                 <Link
                   href={`/dashboard/${b.id}`}
-                  className="flex items-center gap-4 rounded-2xl border border-cyan-200/80 bg-white p-5 hover:border-cyan-300 hover:bg-cyan-50/50 hover:shadow-lg hover:shadow-cyan-500/10 transition-all text-base"
+                  className="flex items-center gap-4 rounded-2xl border border-cyan-200/80 bg-white p-5 hover:border-cyan-300 hover:bg-cyan-50/50 hover:shadow-lg hover:shadow-cyan-500/10 transition-all text-lg"
                 >
                   {logoSrc ? (
                     <img
@@ -181,7 +185,7 @@ export default function BusinessListClient({ userName, isEmployee = false }: Bus
                   <div className="min-w-0 flex-1">
                     <p className="font-medium text-slate-800 text-lg">{b.name}</p>
                     {b.payCycle && (
-                      <p className="text-base text-slate-600 mt-0.5">
+                      <p className="text-lg text-slate-600 mt-0.5">
                         Pay: {b.payCycle === "weekly" ? `Weekly (day ${b.payDayOfWeek})` : `Monthly (day ${b.payDayOfMonth})`}
                       </p>
                     )}

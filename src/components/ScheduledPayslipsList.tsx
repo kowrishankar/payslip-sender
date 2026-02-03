@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { IconPencil, IconPaperAirplane, IconTrash, IconCheck, IconX } from "@/components/Icons";
 
 export interface ScheduledPayslipItem {
   id: string;
@@ -13,7 +14,7 @@ export interface ScheduledPayslipItem {
   employeeEmail: string;
 }
 
-const sectionTitleClass = "text-xl font-semibold text-slate-900 mb-4 pb-2 border-b border-slate-200";
+const sectionTitleClass = "text-xl font-semibold text-slate-900 mb-4 pb-2 border-b border-slate-200 uppercase tracking-wide";
 
 interface ScheduledPayslipsListProps {
   businessId: string;
@@ -140,7 +141,7 @@ export default function ScheduledPayslipsList({
     return (
       <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-card">
         <h3 className={sectionTitleClass}>Scheduled payslips</h3>
-        <p className="text-base text-slate-600">Loading scheduled jobs…</p>
+        <p className="text-lg text-slate-600">Loading scheduled jobs…</p>
       </div>
     );
   }
@@ -148,29 +149,29 @@ export default function ScheduledPayslipsList({
   return (
     <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-card">
       <h3 className={sectionTitleClass}>Scheduled payslips</h3>
-      <p className="text-base text-slate-700 mb-4">
+      <p className="text-lg text-slate-700 mb-4">
         Future payslips scheduled to be sent automatically. You can edit the time, send now, or cancel.
       </p>
 
       {error && (
-        <p className="text-base text-red-700 bg-red-50 border border-red-200 rounded-xl px-3 py-2 font-medium mb-4">
+        <p className="text-lg text-red-700 bg-red-50 border border-red-200 rounded-xl px-3 py-2 font-medium mb-4">
           {error}
         </p>
       )}
 
       {items.length === 0 ? (
-        <p className="text-base text-slate-600 py-6 text-center rounded-xl border border-dashed border-slate-200 bg-slate-50/50">
+        <p className="text-lg text-slate-600 py-6 text-center rounded-xl border border-dashed border-slate-200 bg-slate-50/50">
           No scheduled payslips. Use &quot;Bulk send &amp; schedule payslips&quot; to schedule.
         </p>
       ) : (
         <div className="overflow-x-auto">
-          <table className="w-full text-base border-collapse">
+          <table className="w-full text-lg border-collapse">
             <thead>
               <tr className="border-b border-slate-200 bg-slate-50">
-                <th className="text-left font-semibold text-slate-800 px-4 py-3">Employee</th>
-                <th className="text-left font-semibold text-slate-800 px-4 py-3">File</th>
-                <th className="text-left font-semibold text-slate-800 px-4 py-3">Scheduled for</th>
-                <th className="text-right font-semibold text-slate-800 px-4 py-3">Actions</th>
+                <th className="text-left font-semibold text-slate-800 px-4 py-3 uppercase tracking-wide">Employee</th>
+                <th className="text-left font-semibold text-slate-800 px-4 py-3 uppercase tracking-wide">File</th>
+                <th className="text-left font-semibold text-slate-800 px-4 py-3 uppercase tracking-wide">Scheduled for</th>
+                <th className="text-right font-semibold text-slate-800 px-4 py-3 uppercase tracking-wide">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -178,7 +179,7 @@ export default function ScheduledPayslipsList({
                 <tr key={item.id} className="border-b border-slate-100 last:border-0 hover:bg-cyan-50/30">
                   <td className="px-4 py-3 text-slate-900">
                     <span className="font-medium">{item.employeeName}</span>
-                    <span className="text-slate-600 block text-sm">{item.employeeEmail}</span>
+                    <span className="text-slate-600 block text-base">{item.employeeEmail}</span>
                   </td>
                   <td className="px-4 py-3 text-slate-700 truncate max-w-[180px]" title={item.fileName}>
                     {item.fileName}
@@ -191,29 +192,31 @@ export default function ScheduledPayslipsList({
                           value={editScheduledAt}
                           onChange={(e) => setEditScheduledAt(e.target.value)}
                           min={new Date().toISOString().slice(0, 16)}
-                          className="w-full max-w-[220px] bg-slate-50 border border-slate-200 rounded-lg px-2 py-1.5 text-slate-900 text-base focus:ring-2 focus:ring-cyan-400"
+                          className="w-full max-w-[220px] bg-slate-50 border border-slate-200 rounded-lg px-2 py-1.5 text-slate-900 text-lg focus:ring-2 focus:ring-cyan-400"
                         />
                         <textarea
                           value={editMessage}
                           onChange={(e) => setEditMessage(e.target.value)}
                           placeholder="Optional message"
                           rows={2}
-                          className="w-full max-w-[220px] bg-slate-50 border border-slate-200 rounded-lg px-2 py-1.5 text-slate-900 text-sm focus:ring-2 focus:ring-cyan-400 resize-y"
+                          className="w-full max-w-[220px] bg-slate-50 border border-slate-200 rounded-lg px-2 py-1.5 text-slate-900 text-base focus:ring-2 focus:ring-cyan-400 resize-y"
                         />
                         <div className="flex gap-2">
                           <button
                             type="button"
                             onClick={handleSaveEdit}
                             disabled={actionLoading === item.id}
-                            className="text-sm font-medium text-cyan-600 hover:text-cyan-700 disabled:opacity-50"
+                            className="inline-flex items-center gap-1.5 text-base font-medium text-cyan-600 uppercase tracking-wide hover:text-cyan-700 disabled:opacity-50"
                           >
+                            <IconCheck className="w-4 h-4" />
                             {actionLoading === item.id ? "Saving…" : "Save"}
                           </button>
                           <button
                             type="button"
                             onClick={() => setEditingId(null)}
-                            className="text-sm font-medium text-slate-600 hover:text-slate-800"
+                            className="inline-flex items-center gap-1.5 text-base font-medium text-slate-600 uppercase tracking-wide hover:text-slate-800"
                           >
+                            <IconX className="w-4 h-4" />
                             Cancel
                           </button>
                         </div>
@@ -232,25 +235,28 @@ export default function ScheduledPayslipsList({
                           type="button"
                           onClick={() => startEdit(item)}
                           disabled={!!actionLoading}
-                          className="text-sm font-medium text-slate-700 hover:text-slate-900 py-1.5 px-2 rounded-lg hover:bg-slate-100 disabled:opacity-50"
+                          className="inline-flex items-center gap-1.5 text-base font-medium text-slate-700 uppercase tracking-wide hover:text-slate-900 py-1.5 px-2 rounded-lg hover:bg-slate-100 disabled:opacity-50"
                         >
+                          <IconPencil className="w-4 h-4" />
                           Edit
                         </button>
                         <button
                           type="button"
                           onClick={() => handleSendNow(item.id)}
                           disabled={actionLoading !== null}
-                          className="text-sm font-medium text-cyan-600 hover:text-cyan-700 py-1.5 px-2 rounded-lg hover:bg-cyan-50 disabled:opacity-50"
+                          className="inline-flex items-center gap-1.5 text-base font-medium text-cyan-600 uppercase tracking-wide hover:text-cyan-700 py-1.5 px-2 rounded-lg hover:bg-cyan-50 disabled:opacity-50"
                         >
+                          <IconPaperAirplane className="w-4 h-4" />
                           {actionLoading === item.id ? "Sending…" : "Send now"}
                         </button>
                         <button
                           type="button"
                           onClick={() => handleCancel(item.id)}
                           disabled={actionLoading !== null}
-                          className="text-sm font-medium text-red-600 hover:text-red-700 py-1.5 px-2 rounded-lg hover:bg-red-50 disabled:opacity-50"
+                          className="inline-flex items-center gap-1.5 text-base font-medium text-red-600 uppercase tracking-wide hover:text-red-700 py-1.5 px-2 rounded-lg hover:bg-red-50 disabled:opacity-50"
                           title="Remove from schedule (payslip will not be sent)"
                         >
+                          <IconTrash className="w-4 h-4" />
                           {actionLoading === item.id ? "…" : "Cancel schedule"}
                         </button>
                       </div>

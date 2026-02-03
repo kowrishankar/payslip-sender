@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
+import { IconX, IconPaperAirplane } from "@/components/Icons";
 import type { Employee } from "./EmployeeList";
 
 interface SendPayslipFormProps {
@@ -73,7 +74,7 @@ export default function SendPayslipForm({
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm">
       <div className="w-full max-w-md rounded-2xl border border-cyan-200/80 bg-white shadow-xl shadow-cyan-500/10 p-6">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-xl font-semibold text-slate-900">
+          <h3 className="text-xl font-semibold text-slate-900 uppercase tracking-wide">
             Send payslip to {employee.name}
           </h3>
           <button
@@ -85,12 +86,12 @@ export default function SendPayslipForm({
             ✕
           </button>
         </div>
-        <p className="text-base text-slate-700 mb-4">{employee.email}</p>
+        <p className="text-lg text-slate-700 mb-4">{employee.email}</p>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label
               htmlFor="email-message"
-              className="block text-base font-medium text-slate-800 mb-1"
+              className="block text-lg font-medium uppercase tracking-wide text-slate-800 mb-1"
             >
               Message to include in email (optional)
             </label>
@@ -100,23 +101,23 @@ export default function SendPayslipForm({
               onChange={(e) => setMessage(e.target.value)}
               rows={3}
               placeholder="e.g. Thank you for your work this month. Please find your payslip attached."
-              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-slate-900 text-base placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-cyan-400 resize-y min-h-[80px]"
+              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-slate-900 text-lg placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-cyan-400 resize-y min-h-[80px]"
             />
           </div>
           {error && (
-            <p className="text-base text-red-700 bg-red-50 border border-red-200 rounded-xl px-3 py-2 font-medium">
+            <p className="text-lg text-red-700 bg-red-50 border border-red-200 rounded-xl px-3 py-2 font-medium uppercase tracking-wide">
               {error}
             </p>
           )}
           {success && (
-            <p className="text-base text-cyan-700 bg-cyan-50 border border-cyan-200 rounded-xl px-3 py-2 font-medium">
+            <p className="text-lg text-cyan-700 bg-cyan-50 border border-cyan-200 rounded-xl px-3 py-2 font-medium uppercase tracking-wide">
               {success}
             </p>
           )}
           <div>
             <label
               htmlFor="payslip-amount"
-              className="block text-base font-medium text-slate-800 mb-1"
+              className="block text-lg font-medium uppercase tracking-wide text-slate-800 mb-1"
             >
               Payment amount (optional, for dashboard totals)
             </label>
@@ -128,13 +129,13 @@ export default function SendPayslipForm({
               placeholder="e.g. 1500.00"
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
-              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-slate-900 text-base placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-cyan-400"
+              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-slate-900 text-lg placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-cyan-400"
             />
           </div>
           <div>
             <label
               htmlFor="payslip-file"
-              className="block text-base font-medium text-slate-800 mb-1"
+              className="block text-lg font-medium uppercase tracking-wide text-slate-800 mb-1"
             >
               Payslip file (PDF)
             </label>
@@ -144,25 +145,27 @@ export default function SendPayslipForm({
               type="file"
               accept=".pdf,application/pdf"
               onChange={(e) => setFile(e.target.files?.[0] ?? null)}
-              className="w-full text-base text-slate-700 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:bg-cyan-500 file:text-white file:font-medium file:cursor-pointer hover:file:bg-cyan-600"
+              className="w-full text-lg text-slate-700 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:bg-cyan-500 file:text-white file:font-medium uppercase tracking-wide file:cursor-pointer hover:file:bg-cyan-600"
             />
             {file && (
-              <p className="text-base text-slate-600 mt-1">{file.name}</p>
+              <p className="text-lg text-slate-600 mt-1">{file.name}</p>
             )}
           </div>
           <div className="flex gap-2">
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 py-2 px-4 rounded-xl border border-slate-200 text-slate-700 hover:bg-slate-100 transition-colors font-medium text-base"
+              className="flex-1 py-2 px-4 rounded-xl border border-slate-200 text-slate-700 hover:bg-slate-100 transition-colors font-medium uppercase tracking-wide text-lg inline-flex items-center justify-center gap-1.5"
             >
+              <IconX className="w-4 h-4" />
               Cancel
             </button>
             <button
               type="submit"
               disabled={loading || !file}
-              className="flex-1 py-2 px-4 rounded-xl bg-cyan-500 hover:bg-cyan-600 text-white font-medium text-base transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-md shadow-cyan-500/25"
+              className="flex-1 py-2 px-4 rounded-xl bg-cyan-500 hover:bg-cyan-600 text-white font-medium uppercase tracking-wide text-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-md shadow-cyan-500/25 inline-flex items-center justify-center gap-1.5"
             >
+              <IconPaperAirplane className="w-4 h-4" />
               {loading ? "Sending…" : "Send payslip"}
             </button>
           </div>

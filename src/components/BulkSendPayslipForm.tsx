@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState, useEffect } from "react";
+import { IconX, IconPaperAirplane } from "@/components/Icons";
 import type { Employee } from "./EmployeeList";
 
 interface BulkSendPayslipFormProps {
@@ -128,7 +129,7 @@ export default function BulkSendPayslipForm({
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm overflow-y-auto">
       <div className="w-full max-w-2xl rounded-2xl border border-cyan-200/80 bg-white shadow-xl shadow-cyan-500/10 p-6 my-8">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-xl font-semibold text-slate-900">
+          <h3 className="text-xl font-semibold text-slate-900 uppercase tracking-wide">
             Bulk send &amp; schedule payslips
           </h3>
           <button
@@ -141,12 +142,12 @@ export default function BulkSendPayslipForm({
           </button>
         </div>
 
-        <p className="text-base text-slate-700 mb-4">
+        <p className="text-lg text-slate-700 mb-4">
           Upload multiple PDFs and assign each to an employee. Send now or schedule for later.
         </p>
 
         <div className="mb-4">
-          <label className="block text-base font-medium text-slate-800 mb-1">
+          <label className="block text-lg font-medium text-slate-800 mb-1">
             Payslip files (PDF)
           </label>
           <input
@@ -155,21 +156,21 @@ export default function BulkSendPayslipForm({
             accept=".pdf,application/pdf"
             multiple
             onChange={handleFilesChange}
-            className="w-full text-base text-slate-700 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:bg-cyan-500 file:text-white file:font-medium file:cursor-pointer hover:file:bg-cyan-600"
+            className="w-full text-lg text-slate-700 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:bg-cyan-500 file:text-white file:font-medium file:cursor-pointer hover:file:bg-cyan-600"
           />
           {files.length > 0 && (
-            <p className="text-base text-slate-600 mt-1">{files.length} file(s) selected</p>
+            <p className="text-lg text-slate-600 mt-1">{files.length} file(s) selected</p>
           )}
         </div>
 
         {loadingEmployees && (
-          <p className="text-base text-slate-600 mb-4">Loading employees…</p>
+          <p className="text-lg text-slate-600 mb-4">Loading employees…</p>
         )}
 
         {files.length > 0 && !loadingEmployees && (
           <>
             <div className="mb-4">
-              <label className="block text-base font-medium text-slate-800 mb-1">
+              <label className="block text-lg font-medium text-slate-800 mb-1">
                 Schedule send for (optional)
               </label>
               <input
@@ -177,20 +178,20 @@ export default function BulkSendPayslipForm({
                 value={scheduleFor}
                 onChange={(e) => setScheduleFor(e.target.value)}
                 min={new Date().toISOString().slice(0, 16)}
-                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-slate-900 text-base focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-cyan-400"
+                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-slate-900 text-lg focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-cyan-400"
               />
-              <p className="text-sm text-slate-500 mt-1">
+              <p className="text-base text-slate-500 mt-1">
                 Leave empty to send immediately. Set a future time to schedule all payslips.
               </p>
             </div>
 
             <div className="border border-slate-200 rounded-xl overflow-hidden mb-4 max-h-64 overflow-y-auto">
-              <table className="w-full text-left text-sm">
+              <table className="w-full text-left text-base">
                 <thead className="bg-slate-50 border-b border-slate-200 sticky top-0">
                   <tr>
-                    <th className="px-3 py-2 font-medium text-slate-800">File</th>
-                    <th className="px-3 py-2 font-medium text-slate-800">Employee</th>
-                    <th className="px-3 py-2 font-medium text-slate-800 w-24">Amount</th>
+                    <th className="px-3 py-2 font-medium text-slate-800 uppercase tracking-wide">File</th>
+                    <th className="px-3 py-2 font-medium text-slate-800 uppercase tracking-wide">Employee</th>
+                    <th className="px-3 py-2 font-medium text-slate-800 w-24 uppercase tracking-wide">Amount</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -204,7 +205,7 @@ export default function BulkSendPayslipForm({
                           value={assignments[i] ?? ""}
                           onChange={(e) => setAssignment(i, e.target.value)}
                           disabled={loadingEmployees}
-                          className="w-full bg-slate-50 border border-slate-200 rounded-lg px-2 py-1.5 text-slate-900 text-base focus:ring-2 focus:ring-cyan-400 disabled:opacity-60"
+                          className="w-full bg-slate-50 border border-slate-200 rounded-lg px-2 py-1.5 text-slate-900 text-lg focus:ring-2 focus:ring-cyan-400 disabled:opacity-60"
                         >
                           <option value="">Select employee</option>
                           {employees.map((emp) => (
@@ -222,7 +223,7 @@ export default function BulkSendPayslipForm({
                           placeholder="0.00"
                           value={amounts[i] ?? ""}
                           onChange={(e) => setAmount(i, e.target.value)}
-                          className="w-full bg-slate-50 border border-slate-200 rounded-lg px-2 py-1.5 text-slate-900 text-base"
+                          className="w-full bg-slate-50 border border-slate-200 rounded-lg px-2 py-1.5 text-slate-900 text-lg"
                         />
                       </td>
                     </tr>
@@ -233,7 +234,7 @@ export default function BulkSendPayslipForm({
 
             {files.length > 0 && (
               <div className="mb-4">
-                <span className="block text-base font-medium text-slate-800 mb-1">
+                <span className="block text-lg font-medium text-slate-800 mb-1">
                   Message (optional, same for all payslips)
                 </span>
                 <textarea
@@ -241,7 +242,7 @@ export default function BulkSendPayslipForm({
                   onChange={(e) => setMessage(0, e.target.value)}
                   rows={2}
                   placeholder="e.g. Thank you for your work this month."
-                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-900 text-base placeholder-slate-500 focus:ring-2 focus:ring-cyan-400 resize-y"
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-900 text-lg placeholder-slate-500 focus:ring-2 focus:ring-cyan-400 resize-y"
                 />
               </div>
             )}
@@ -249,12 +250,12 @@ export default function BulkSendPayslipForm({
         )}
 
         {error && (
-          <p className="text-base text-red-700 bg-red-50 border border-red-200 rounded-xl px-3 py-2 font-medium mb-4">
+          <p className="text-lg text-red-700 bg-red-50 border border-red-200 rounded-xl px-3 py-2 font-medium mb-4">
             {error}
           </p>
         )}
         {success && (
-          <p className="text-base text-cyan-700 bg-cyan-50 border border-cyan-200 rounded-xl px-3 py-2 font-medium mb-4">
+          <p className="text-lg text-cyan-700 bg-cyan-50 border border-cyan-200 rounded-xl px-3 py-2 font-medium mb-4">
             {success}
           </p>
         )}
@@ -263,8 +264,9 @@ export default function BulkSendPayslipForm({
           <button
             type="button"
             onClick={onClose}
-            className="py-2 px-4 rounded-xl border border-slate-200 text-slate-700 hover:bg-slate-100 font-medium text-base"
+            className="inline-flex items-center gap-1.5 py-2 px-4 rounded-xl border border-slate-200 text-slate-700 hover:bg-slate-100 font-medium text-lg uppercase tracking-wide"
           >
+            <IconX className="w-4 h-4" />
             Cancel
           </button>
           {scheduleFor.trim() && new Date(scheduleFor) > new Date() ? (
@@ -272,8 +274,9 @@ export default function BulkSendPayslipForm({
               type="button"
               onClick={() => handleSubmit(false)}
               disabled={loading}
-              className="py-2 px-4 rounded-xl bg-teal-500 hover:bg-teal-600 text-white font-medium text-base shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
+              className="inline-flex items-center gap-1.5 py-2 px-4 rounded-xl bg-teal-500 hover:bg-teal-600 text-white font-medium text-lg uppercase tracking-wide shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
             >
+              <IconPaperAirplane className="w-4 h-4" />
               {loading ? "Scheduling…" : "Schedule"}
             </button>
           ) : null}
@@ -281,8 +284,9 @@ export default function BulkSendPayslipForm({
             type="button"
             onClick={() => handleSubmit(true)}
             disabled={loading}
-            className="py-2 px-4 rounded-xl bg-cyan-500 hover:bg-cyan-600 text-white font-medium text-base shadow-md shadow-cyan-500/25 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="inline-flex items-center gap-1.5 py-2 px-4 rounded-xl bg-cyan-500 hover:bg-cyan-600 text-white font-medium text-lg uppercase tracking-wide shadow-md shadow-cyan-500/25 disabled:opacity-50 disabled:cursor-not-allowed"
           >
+            <IconPaperAirplane className="w-4 h-4" />
             {loading ? "Sending…" : "Send now"}
           </button>
         </div>

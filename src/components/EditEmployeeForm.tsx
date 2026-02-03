@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { IconX, IconCheck } from "@/components/Icons";
 import type { Employee } from "./EmployeeList";
 
 interface EditEmployeeFormProps {
@@ -82,7 +83,7 @@ export default function EditEmployeeForm({
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm">
       <div className="w-full max-w-md rounded-2xl border border-cyan-200/80 bg-white shadow-xl shadow-cyan-500/10 p-6">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-slate-800">
+          <h3 className="text-lg font-semibold text-slate-800 uppercase tracking-wide">
             Edit employee
           </h3>
           <button
@@ -94,17 +95,17 @@ export default function EditEmployeeForm({
             ✕
           </button>
         </div>
-        <p className="text-sm text-slate-600 mb-4">{employee.email}</p>
+        <p className="text-base text-slate-600 mb-4">{employee.email}</p>
         <form onSubmit={handleSubmit} className="space-y-4">
           {error && (
-            <p className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg px-3 py-2">
+            <p className="text-base text-red-600 bg-red-50 border border-red-200 rounded-lg px-3 py-2">
               {error}
             </p>
           )}
           <div>
             <label
               htmlFor="edit-name"
-              className="block text-sm font-medium text-slate-700 mb-1"
+              className="block text-base font-medium uppercase tracking-wide text-slate-700 mb-1"
             >
               Name
             </label>
@@ -120,7 +121,7 @@ export default function EditEmployeeForm({
           <div>
             <label
               htmlFor="edit-department"
-              className="block text-sm font-medium text-slate-700 mb-1"
+              className="block text-base font-medium uppercase tracking-wide text-slate-700 mb-1"
             >
               Department
             </label>
@@ -136,7 +137,7 @@ export default function EditEmployeeForm({
           <div>
             <label
               htmlFor="edit-startDate"
-              className="block text-sm font-medium text-slate-700 mb-1"
+              className="block text-base font-medium uppercase tracking-wide text-slate-700 mb-1"
             >
               Start date
             </label>
@@ -151,7 +152,7 @@ export default function EditEmployeeForm({
           <div>
             <label
               htmlFor="edit-address"
-              className="block text-sm font-medium text-slate-700 mb-1"
+              className="block text-base font-medium uppercase tracking-wide text-slate-700 mb-1"
             >
               Address
             </label>
@@ -167,7 +168,7 @@ export default function EditEmployeeForm({
           <div>
             <label
               htmlFor="edit-contactNumber"
-              className="block text-sm font-medium text-slate-700 mb-1"
+              className="block text-base font-medium uppercase tracking-wide text-slate-700 mb-1"
             >
               Contact number
             </label>
@@ -181,7 +182,7 @@ export default function EditEmployeeForm({
             />
           </div>
           <div className="border-t border-slate-200 pt-4 mt-4">
-            <p className="text-sm font-medium text-slate-700 mb-3">How are they paid?</p>
+            <p className="text-base font-medium uppercase tracking-wide text-slate-700 mb-3">How are they paid?</p>
             <div className="flex gap-4 mb-3">
               <label className="flex items-center gap-2 cursor-pointer">
                 <input
@@ -216,7 +217,7 @@ export default function EditEmployeeForm({
             </div>
             {payCycle === "weekly" && (
               <div>
-                <label htmlFor="edit-payDayOfWeek" className="block text-sm text-slate-600 mb-1">Pay day (week)</label>
+                <label htmlFor="edit-payDayOfWeek" className="block text-base text-slate-600 mb-1">Pay day (week)</label>
                 <select
                   id="edit-payDayOfWeek"
                   value={payDayOfWeek}
@@ -231,7 +232,7 @@ export default function EditEmployeeForm({
             )}
             {payCycle === "monthly" && (
               <div>
-                <label htmlFor="edit-payDayOfMonth" className="block text-sm text-slate-600 mb-1">Pay day (month, 1–31)</label>
+                <label htmlFor="edit-payDayOfMonth" className="block text-base text-slate-600 mb-1">Pay day (month, 1–31)</label>
                 <input
                   id="edit-payDayOfMonth"
                   type="number"
@@ -248,15 +249,17 @@ export default function EditEmployeeForm({
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 py-2 px-4 rounded-xl border border-slate-200 text-slate-700 hover:bg-slate-100 transition-colors"
+              className="flex-1 py-2 px-4 rounded-xl border border-slate-200 text-slate-700 hover:bg-slate-100 transition-colors inline-flex items-center justify-center gap-1.5"
             >
+              <IconX className="w-4 h-4" />
               Cancel
             </button>
             <button
               type="submit"
               disabled={loading}
-              className="flex-1 py-2 px-4 rounded-xl bg-cyan-500 hover:bg-cyan-600 text-white font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-md shadow-cyan-500/25"
+              className="flex-1 py-2 px-4 rounded-xl bg-cyan-500 hover:bg-cyan-600 text-white font-medium uppercase tracking-wide transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-md shadow-cyan-500/25 inline-flex items-center justify-center gap-1.5"
             >
+              <IconCheck className="w-4 h-4" />
               {loading ? "Saving…" : "Save"}
             </button>
           </div>
