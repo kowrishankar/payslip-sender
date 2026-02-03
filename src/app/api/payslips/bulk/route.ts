@@ -128,7 +128,12 @@ export async function POST(req: NextRequest) {
             filePath = path.relative(process.cwd(), absolutePath);
           }
 
-          await prisma.scheduledPayslip.create({
+          const scheduledPayslip = (prisma as unknown as {
+            scheduledPayslip: {
+              create: (args: { data: Record<string, unknown> }) => Promise<unknown>;
+            };
+          }).scheduledPayslip;
+          await scheduledPayslip.create({
             data: {
               id: scheduledId,
               fileName,
