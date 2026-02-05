@@ -126,10 +126,10 @@ export default function EmployeeList({
                     <button
                       type="button"
                       onClick={() => onSelectForPayslip(emp)}
-                      className="inline-flex items-center gap-1.5 text-cyan-600 hover:text-cyan-700 text-lg font-medium transition-colors py-2 px-3 rounded-lg hover:bg-cyan-50 min-h-[2.5rem] uppercase tracking-wide"
+                      className="inline-flex items-center gap-1.5 text-cyan-600 hover:text-cyan-700 text-lg font-medium transition-colors py-2 px-3 rounded-lg hover:bg-cyan-50 min-h-[2.5rem] tracking-wide"
                     >
                       <IconDocument className="w-4 h-4" />
-                      Send payslip
+                      Send Payslip
                     </button>
                   </td>
                 )}
@@ -140,7 +140,7 @@ export default function EmployeeList({
                         <button
                           type="button"
                           onClick={() => onEdit(emp)}
-                          className="inline-flex items-center gap-1.5 text-slate-600 hover:text-slate-800 text-lg font-medium transition-colors py-2 px-3 rounded-lg hover:bg-slate-100 min-h-[2.5rem] uppercase tracking-wide"
+                          className="inline-flex items-center gap-1.5 text-slate-600 hover:text-slate-800 text-lg font-medium transition-colors py-2 px-3 rounded-lg hover:bg-slate-100 min-h-[2.5rem] tracking-wide"
                         >
                           <IconPencil className="w-4 h-4" />
                           Edit
@@ -150,7 +150,7 @@ export default function EmployeeList({
                         type="button"
                         onClick={() => handleDelete(emp.id)}
                         disabled={deletingId === emp.id}
-                        className="inline-flex items-center gap-1.5 text-red-600 hover:text-red-700 text-lg font-medium transition-colors py-2 px-3 rounded-lg hover:bg-red-50 min-h-[2.5rem] disabled:opacity-50 uppercase tracking-wide"
+                        className="inline-flex items-center gap-1.5 text-red-600 hover:text-red-700 text-lg font-medium transition-colors py-2 px-3 rounded-lg hover:bg-red-50 min-h-[2.5rem] disabled:opacity-50 tracking-wide"
                         title="Remove employee"
                       >
                         <IconTrash className="w-4 h-4" />

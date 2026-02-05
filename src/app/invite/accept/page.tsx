@@ -152,9 +152,9 @@ function InviteAcceptForm() {
           </button>
         </form>
         <p className="text-center text-slate-700 text-lg mt-4">
-          <Link href="/" className="inline-flex items-center gap-1.5 text-slate-700 hover:text-slate-900 font-medium uppercase tracking-wide">
+          <Link href="/" className="inline-flex items-center gap-1.5 text-slate-700 hover:text-slate-900 font-medium tracking-wide">
             <IconHome className="w-4 h-4" />
-            ← Back to home
+            Back to home
           </Link>
         </p>
       </div>

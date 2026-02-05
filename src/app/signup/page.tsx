@@ -128,19 +128,18 @@ export default function SignupPage() {
           Already have an account?{" "}
           <Link
             href="/login"
-            className="inline-flex items-center gap-1.5 text-cyan-600 hover:text-cyan-700 font-medium text-lg uppercase tracking-wide"
+            className="inline-flex items-center gap-1.5 text-cyan-600 hover:text-cyan-700 font-medium text-lg tracking-wide"
           >
-            <IconLogin className="w-4 h-4" />
             Log in
           </Link>
         </p>
         <p className="text-center mt-2">
           <Link
             href="/"
-            className="inline-flex items-center gap-1.5 text-slate-700 hover:text-slate-900 text-lg font-medium uppercase tracking-wide"
+            className="inline-flex items-center gap-1.5 text-slate-700 hover:text-slate-900 text-lg font-medium tracking-wide"
           >
             <IconHome className="w-4 h-4" />
-            ← Back to home
+            Back to Home
           </Link>
         </p>
       </div>

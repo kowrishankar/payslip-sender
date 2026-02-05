@@ -165,7 +165,7 @@ export default function BusinessDetailClient({
           <button
             type="button"
             onClick={() => setShowAddEmployeeModal(true)}
-            className="rounded-xl border border-slate-200 bg-white px-5 py-4 text-left text-lg font-medium text-slate-800 shadow-card hover:border-cyan-200 hover:bg-cyan-50/50 transition-all uppercase tracking-wide inline-flex items-center gap-3"
+            className="rounded-xl border border-slate-200 bg-white px-5 py-4 text-left text-lg font-medium text-slate-800 shadow-card hover:border-cyan-200 hover:bg-cyan-50/50 transition-all tracking-wide inline-flex items-center gap-3"
           >
             <IconPlus className="w-5 h-5" />
             Add Employee
@@ -173,10 +173,10 @@ export default function BusinessDetailClient({
           <button
             type="button"
             onClick={() => setShowBulkSendModal(true)}
-            className="rounded-xl border border-slate-200 bg-white px-5 py-4 text-left text-lg font-medium text-slate-800 shadow-card hover:border-cyan-200 hover:bg-cyan-50/50 transition-all uppercase tracking-wide inline-flex items-center gap-3"
+            className="rounded-xl border border-slate-200 bg-white px-5 py-4 text-left text-lg font-medium text-slate-800 shadow-card hover:border-cyan-200 hover:bg-cyan-50/50 transition-all tracking-wide inline-flex items-center gap-3"
           >
             <IconDocument className="w-5 h-5" />
-            Bulk send &amp; schedule payslips
+            Bulk Send &amp; Schedule Payslips
           </button>
         </div>
 

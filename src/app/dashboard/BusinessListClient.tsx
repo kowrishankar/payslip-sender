@@ -81,17 +81,12 @@ export default function BusinessListClient({ userName, isEmployee = false }: Bus
           <p className="text-slate-700 text-lg mt-1">Select a business to manage staff and payslips</p>
         </div>
         <div className="flex items-center gap-4 flex-wrap">
-          <span className="text-slate-700 text-lg font-medium">{userName}</span>
           {isEmployee && (
             <Link href="/my-payslips" className="inline-flex items-center gap-1.5 text-lg text-slate-600 hover:text-cyan-600 transition-colors py-2 px-3 rounded-xl hover:bg-cyan-50 font-medium uppercase tracking-wide">
               <IconDocument className="w-4 h-4" />
               My payslips
             </Link>
           )}
-          <Link href="/" className="inline-flex items-center gap-1.5 text-lg text-slate-600 hover:text-cyan-600 transition-colors py-2 px-3 rounded-xl hover:bg-cyan-50 font-medium uppercase tracking-wide">
-            <IconHome className="w-4 h-4" />
-            Home
-          </Link>
           <button
             type="button"
             onClick={() => signOut({ callbackUrl: "/" })}
@@ -127,7 +122,7 @@ export default function BusinessListClient({ userName, isEmployee = false }: Bus
             <button
               type="button"
               onClick={() => { setShowAdd(false); setError(""); }}
-              className="inline-flex items-center gap-1.5 px-5 py-3 rounded-xl border border-slate-200 text-slate-700 hover:bg-slate-100 text-lg font-medium uppercase tracking-wide"
+              className="inline-flex items-center gap-1.5 px-5 py-3 rounded-xl border border-slate-200 text-slate-700 hover:bg-slate-100 text-lg font-medium tracking-wide"
             >
               <IconX className="w-4 h-4" />
               Cancel
@@ -135,10 +130,10 @@ export default function BusinessListClient({ userName, isEmployee = false }: Bus
             <button
               type="submit"
               disabled={adding}
-              className="inline-flex items-center gap-1.5 px-5 py-3 rounded-xl bg-cyan-500 hover:bg-cyan-600 text-white font-medium text-lg disabled:opacity-50 min-h-[3rem] shadow-md shadow-cyan-500/25 uppercase tracking-wide"
+              className="inline-flex items-center gap-1.5 px-5 py-3 rounded-xl bg-cyan-500 hover:bg-cyan-600 text-white font-medium text-lg disabled:opacity-50 min-h-[3rem] shadow-md shadow-cyan-500/25 tracking-wide"
             >
               <IconPlus className="w-4 h-4" />
-              {adding ? "Creating…" : "Create business"}
+              {adding ? "Creating…" : "Create Business"}
             </button>
           </div>
         </form>

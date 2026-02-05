@@ -105,16 +105,15 @@ function LoginForm() {
           Business owner?{" "}
           <Link
             href="/signup"
-            className="inline-flex items-center gap-1.5 text-cyan-600 hover:text-cyan-700 font-medium text-lg uppercase tracking-wide"
+            className="inline-flex items-center gap-1.5 text-cyan-600 hover:text-cyan-700 font-medium text-lg tracking-wide"
           >
-            <IconUserPlus className="w-4 h-4" />
             Sign up
           </Link>
         </p>
         <p className="text-center mt-2">
           <Link
             href="/"
-            className="inline-flex items-center gap-1.5 text-slate-700 hover:text-slate-900 font-medium text-lg uppercase tracking-wide"
+            className="inline-flex items-center gap-1.5 text-slate-700 hover:text-slate-900 font-medium text-lg tracking-wide"
           >
             <IconHome className="w-4 h-4" />
             Back to Home
