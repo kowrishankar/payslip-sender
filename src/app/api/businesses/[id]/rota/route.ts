@@ -6,6 +6,36 @@ const secret = process.env.NEXTAUTH_SECRET;
 
 export const dynamic = "force-dynamic";
 
+function getMonday(d: Date): string {
+  const date = new Date(d);
+  const day = date.getDay();
+  const diff = (day + 6) % 7;
+  date.setDate(date.getDate() - diff);
+  return date.toISOString().slice(0, 10);
+}
+
+function getEditableWeekStarts(): string[] {
+  const today = new Date();
+  const thisMonday = getMonday(today);
+  const d = new Date(thisMonday);
+  return [
+    thisMonday,
+    addDays(d, 7),
+    addDays(d, 14),
+  ];
+}
+
+function addDays(d: Date, days: number): string {
+  const next = new Date(d);
+  next.setDate(next.getDate() + days);
+  return next.toISOString().slice(0, 10);
+}
+
+function isEditableWeek(weekStartDate: string): boolean {
+  const editable = getEditableWeekStarts();
+  return editable.includes(weekStartDate);
+}
+
 async function getAccess(
   businessId: string,
   userId: string
@@ -30,6 +60,7 @@ function shiftToJson(shift: {
   id: string;
   businessId: string;
   employeeId: string;
+  weekStartDate: Date;
   dayOfWeek: number;
   startTime: string;
   endTime: string;
@@ -41,6 +72,7 @@ function shiftToJson(shift: {
     employeeId: shift.employeeId,
     employeeName: shift.employee?.name,
     employeeEmail: shift.employee?.email,
+    weekStartDate: shift.weekStartDate.toISOString().slice(0, 10),
     dayOfWeek: shift.dayOfWeek,
     startTime: shift.startTime,
     endTime: shift.endTime,
@@ -62,10 +94,49 @@ export async function GET(
       return NextResponse.json({ error: "Business not found" }, { status: 404 });
     }
 
+    const { searchParams } = new URL(req.url);
+    const fromParam = searchParams.get("from");
+    const toParam = searchParams.get("to");
+    const monthParam = searchParams.get("month");
+
+    let fromDate: string;
+    let toDate: string;
+
+    if (monthParam) {
+      const [y, m] = monthParam.split("-").map(Number);
+      if (!y || !m) {
+        return NextResponse.json(
+          { error: "Invalid month (use YYYY-MM)" },
+          { status: 400 }
+        );
+      }
+      const first = new Date(y, m - 1, 1);
+      const last = new Date(y, m, 0);
+      fromDate = getMonday(first);
+      toDate = getMonday(last);
+    } else if (fromParam && toParam) {
+      fromDate = fromParam;
+      toDate = toParam;
+    } else {
+      const today = new Date();
+      const thisMonday = getMonday(today);
+      const thisMondayDate = new Date(thisMonday);
+      const prevMonday = addDays(new Date(thisMondayDate.getTime()), -7);
+      const twoWeeksLater = addDays(thisMondayDate, 14);
+      fromDate = prevMonday;
+      toDate = twoWeeksLater;
+    }
+
+    const from = new Date(fromDate);
+    const to = new Date(toDate);
+
     const shifts = await prisma.rotaShift.findMany({
-      where: { businessId },
+      where: {
+        businessId,
+        weekStartDate: { gte: from, lte: to },
+      },
       include: { employee: { select: { id: true, name: true, email: true } } },
-      orderBy: [{ dayOfWeek: "asc" }, { startTime: "asc" }],
+      orderBy: [{ weekStartDate: "asc" }, { dayOfWeek: "asc" }, { startTime: "asc" }],
     });
 
     return NextResponse.json(shifts.map(shiftToJson));
@@ -94,16 +165,25 @@ export async function POST(
     }
 
     const body = await req.json();
-    const { employeeId, dayOfWeek, startTime, endTime } = body;
+    const { employeeId, weekStartDate, dayOfWeek, startTime, endTime } = body;
 
     if (
       employeeId == null ||
+      weekStartDate == null ||
       dayOfWeek == null ||
       typeof startTime !== "string" ||
       typeof endTime !== "string"
     ) {
       return NextResponse.json(
-        { error: "employeeId, dayOfWeek, startTime and endTime are required" },
+        { error: "employeeId, weekStartDate, dayOfWeek, startTime and endTime are required" },
+        { status: 400 }
+      );
+    }
+
+    const weekStart = String(weekStartDate).slice(0, 10);
+    if (!isEditableWeek(weekStart)) {
+      return NextResponse.json(
+        { error: "You can only add shifts for the current week or the next two weeks" },
         { status: 400 }
       );
     }
@@ -133,6 +213,7 @@ export async function POST(
       data: {
         businessId,
         employeeId,
+        weekStartDate: new Date(weekStart),
         dayOfWeek: day,
         startTime: startTime.trim(),
         endTime: endTime.trim(),

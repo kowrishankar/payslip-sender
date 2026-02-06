@@ -6,6 +6,32 @@ const secret = process.env.NEXTAUTH_SECRET;
 
 export const dynamic = "force-dynamic";
 
+function getMonday(d: Date): string {
+  const date = new Date(d);
+  const day = date.getDay();
+  const diff = (day + 6) % 7;
+  date.setDate(date.getDate() - diff);
+  return date.toISOString().slice(0, 10);
+}
+
+function getEditableWeekStarts(): string[] {
+  const today = new Date();
+  const thisMonday = getMonday(today);
+  const d = new Date(thisMonday);
+  return [thisMonday, addDays(d, 7), addDays(d, 14)];
+}
+
+function addDays(d: Date, days: number): string {
+  const next = new Date(d);
+  next.setDate(next.getDate() + days);
+  return next.toISOString().slice(0, 10);
+}
+
+function isEditableWeek(weekStartDate: Date): boolean {
+  const weekStr = weekStartDate.toISOString().slice(0, 10);
+  return getEditableWeekStarts().includes(weekStr);
+}
+
 export async function PATCH(
   req: NextRequest,
   { params }: { params: Promise<{ id: string; shiftId: string }> }
@@ -29,6 +55,13 @@ export async function PATCH(
     });
     if (!existing) {
       return NextResponse.json({ error: "Shift not found" }, { status: 404 });
+    }
+
+    if (!isEditableWeek(existing.weekStartDate)) {
+      return NextResponse.json(
+        { error: "You can only edit shifts for the current week or the next two weeks" },
+        { status: 400 }
+      );
     }
 
     const body = await req.json();
@@ -74,6 +107,7 @@ export async function PATCH(
       employeeId: shift.employeeId,
       employeeName: shift.employee?.name,
       employeeEmail: shift.employee?.email,
+      weekStartDate: shift.weekStartDate.toISOString().slice(0, 10),
       dayOfWeek: shift.dayOfWeek,
       startTime: shift.startTime,
       endTime: shift.endTime,
@@ -110,6 +144,13 @@ export async function DELETE(
     });
     if (!existing) {
       return NextResponse.json({ error: "Shift not found" }, { status: 404 });
+    }
+
+    if (!isEditableWeek(existing.weekStartDate)) {
+      return NextResponse.json(
+        { error: "You can only delete shifts for the current week or the next two weeks" },
+        { status: 400 }
+      );
     }
 
     await prisma.rotaShift.delete({ where: { id: shiftId } });
