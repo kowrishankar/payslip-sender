@@ -233,7 +233,7 @@ export default function AddEmployeeForm({ businessId, onSuccess, onClose }: AddE
           className={`${onClose ? "flex-1" : "w-full"} bg-cyan-500 hover:bg-cyan-600 text-white font-medium tracking-wide py-2 px-4 rounded-xl transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-md shadow-cyan-500/25 inline-flex items-center justify-center gap-1.5`}
         >
           <IconPlus className="w-4 h-4" />
-          {loading ? "Adding…" : "Add employee"}
+          {loading ? "Adding…" : "Add Employee"}
         </button>
       </div>
     </form>

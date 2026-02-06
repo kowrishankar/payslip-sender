@@ -14,7 +14,8 @@ import ScheduledPayslipsList from "@/components/ScheduledPayslipsList";
 import PayReminder from "@/components/PayReminder";
 import BusinessSettings from "@/components/BusinessSettings";
 import BusinessDashboardStats from "@/components/BusinessDashboardStats";
-import { IconCog, IconList, IconPlus, IconDocument, IconLogout, IconHome } from "@/components/Icons";
+import WeeklyRota from "@/components/WeeklyRota";
+import { IconCog, IconList, IconPlus, IconDocument, IconLogout, IconHome, IconCalendar } from "@/components/Icons";
 import type { Employee } from "@/components/EmployeeList";
 
 const barChartIcon = (
@@ -35,7 +36,7 @@ const chevronDown = (
   </svg>
 );
 
-type ActivePanel = "business" | "payslips" | "add" | null;
+type ActivePanel = "business" | "payslips" | "rota" | "add" | null;
 
 interface BusinessDetailClientProps {
   businessId: string;
@@ -119,10 +120,6 @@ export default function BusinessDetailClient({
                 My payslips
               </Link>
             )}
-            <Link href="/" className="inline-flex items-center gap-1.5 text-lg text-slate-600 hover:text-cyan-600 transition-colors py-2 px-3 rounded-xl hover:bg-cyan-50 font-medium uppercase tracking-wide">
-              <IconHome className="w-4 h-4" />
-              Home
-            </Link>
             <button
               type="button"
               onClick={() => signOut({ callbackUrl: "/" })}
@@ -178,6 +175,18 @@ export default function BusinessDetailClient({
             <IconDocument className="w-5 h-5" />
             Bulk Send &amp; Schedule Payslips
           </button>
+          <button
+            type="button"
+            onClick={() => setActivePanel(activePanel === "rota" ? null : "rota")}
+            className={`rounded-xl border px-5 py-4 text-left text-lg font-medium transition-all shadow-card inline-flex items-center gap-3 ${
+              activePanel === "rota"
+                ? "border-cyan-400 bg-cyan-50 text-cyan-800 shadow-card-hover"
+                : "border-slate-200 bg-white text-slate-800 hover:border-cyan-200 hover:bg-cyan-50/50"
+            }`}
+          >
+            <IconCalendar className="w-5 h-5" />
+            Weekly Rota
+          </button>
         </div>
 
         {/* Expanded panel content below buttons */}
@@ -208,6 +217,11 @@ export default function BusinessDetailClient({
             <PayslipsSentList businessId={businessId} refreshTrigger={refreshTrigger} />
           </div>
         )}
+        {activePanel === "rota" && (
+          <div className="mt-5">
+            <WeeklyRota businessId={businessId} readOnly={false} refreshTrigger={refreshTrigger} />
+          </div>
+        )}
 
         {/* Scheduled payslips – show pending jobs with edit / cancel / send now */}
         <div className="mt-5">
@@ -223,7 +237,7 @@ export default function BusinessDetailClient({
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm">
           <div className="w-full max-w-md rounded-2xl border border-cyan-200/80 bg-white shadow-xl shadow-cyan-500/10 p-6 max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-slate-800 uppercase tracking-wide">Add employee</h3>
+              <h3 className="text-lg font-semibold text-slate-800 uppercase tracking-wide">Add Employee</h3>
               <button
                 type="button"
                 onClick={() => setShowAddEmployeeModal(false)}
@@ -257,7 +271,7 @@ export default function BusinessDetailClient({
                 className="w-full flex items-center justify-between gap-4 px-6 py-5 text-left bg-slate-50 hover:bg-cyan-50/50 transition-colors text-lg"
                 aria-expanded={dashboardOpen}
               >
-                <span className="flex items-center gap-3 font-semibold text-slate-800 text-lg">
+                <span className="flex items-center gap-3 font-semibold text-slate-800 text-lg uppercase">
                   <span className="text-cyan-500">{barChartIcon}</span>
                   Dashboard
                 </span>

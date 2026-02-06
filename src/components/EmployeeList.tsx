@@ -98,13 +98,13 @@ export default function EmployeeList({
         <table className="w-full text-lg">
           <thead>
             <tr className="border-b border-slate-200 bg-slate-50">
-              <th className="text-left text-slate-800 font-semibold text-lg px-5 py-4 uppercase tracking-wide">Name</th>
-              <th className="text-left text-slate-800 font-semibold text-lg px-5 py-4 uppercase tracking-wide">Days until payment due</th>
+              <th className="text-left text-slate-800 font-semibold text-lg px-5 py-4 tracking-wide">Name</th>
+              <th className="text-left text-slate-800 font-semibold text-lg px-5 py-4 tracking-wide">Days until payment due</th>
               {onSelectForPayslip && (
-                <th className="text-right text-slate-800 font-semibold text-lg px-5 py-4 uppercase tracking-wide">Send payslip</th>
+                <th className="text-right text-slate-800 font-semibold text-lg px-5 py-4 tracking-wide">Send payslip</th>
               )}
               {(onEdit || businessId) && (
-                <th className="text-right text-slate-800 font-semibold text-lg px-5 py-4 uppercase tracking-wide">Actions</th>
+                <th className="text-right text-slate-800 font-semibold text-lg px-5 py-4 tracking-wide">Actions</th>
               )}
             </tr>
           </thead>

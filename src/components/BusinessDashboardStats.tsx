@@ -109,9 +109,9 @@ export default function BusinessDashboardStats({
           <table className="w-full text-lg">
             <thead>
               <tr className="border-b border-slate-200 bg-slate-50">
-                <th className="text-left text-slate-800 font-semibold px-6 py-4 uppercase tracking-wide">Employee</th>
-                <th className="text-right text-slate-800 font-semibold px-6 py-4 uppercase tracking-wide">Payments</th>
-                <th className="text-right text-slate-800 font-semibold px-6 py-4 uppercase tracking-wide">Total amount</th>
+                <th className="text-left text-slate-800 font-semibold px-6 py-4 tracking-wide">Employee</th>
+                <th className="text-right text-slate-800 font-semibold px-6 py-4 tracking-wide">Payments</th>
+                <th className="text-right text-slate-800 font-semibold px-6 py-4 tracking-wide">Total amount</th>
               </tr>
             </thead>
             <tbody>

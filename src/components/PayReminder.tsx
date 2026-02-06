@@ -222,7 +222,7 @@ export default function PayReminder({
         <button
           type="button"
           onClick={() => setEditing(true)}
-          className="inline-flex items-center gap-2 text-lg font-medium uppercase tracking-wide text-cyan-600 hover:text-cyan-700 hover:underline shrink-0"
+          className="inline-flex items-center gap-2 text-lg font-medium tracking-wide text-cyan-600 hover:text-cyan-700 hover:underline shrink-0"
         >
           <PencilIcon className="w-5 h-5 shrink-0" />
           {cycle ? "Edit" : "Set reminder"}

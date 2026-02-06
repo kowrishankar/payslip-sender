@@ -141,10 +141,10 @@ export default function BusinessListClient({ userName, isEmployee = false }: Bus
         <button
           type="button"
           onClick={() => setShowAdd(true)}
-          className="mb-6 inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-cyan-500 hover:bg-cyan-600 text-white font-medium text-lg transition-colors min-h-[3rem] shadow-md shadow-cyan-500/25 uppercase tracking-wide"
+          className="mb-6 inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-cyan-500 hover:bg-cyan-600 text-white font-medium text-lg transition-colors min-h-[3rem] shadow-md shadow-cyan-500/25 tracking-wide"
         >
           <IconPlus className="w-5 h-5" />
-          Add business
+          Add Business
         </button>
       )}
 

@@ -165,7 +165,7 @@ export default function BusinessSettings({
                 setEditName(businessName);
                 setShowEditName(true);
               }}
-              className="inline-flex items-center gap-2 text-lg font-medium text-cyan-600 hover:text-cyan-700 hover:underline uppercase tracking-wide"
+              className="inline-flex items-center gap-2 text-lg font-medium text-cyan-600 hover:text-cyan-700 hover:underline tracking-wide"
             >
               <PencilIcon className="w-5 h-5 shrink-0" />
               Edit name
@@ -240,7 +240,7 @@ export default function BusinessSettings({
               className="inline-flex items-center gap-2 text-lg font-medium text-cyan-600 hover:text-cyan-700 hover:underline shrink-0"
             >
               <PencilIcon className="w-5 h-5 shrink-0" />
-              Edit branding
+              Edit Branding
             </button>
           </div>
         ) : (

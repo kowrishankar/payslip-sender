@@ -4,11 +4,17 @@ import { useEffect, useState } from "react";
 import { signOut } from "next-auth/react";
 import Link from "next/link";
 import { IconBuilding, IconHome, IconLogout } from "@/components/Icons";
+import WeeklyRota from "@/components/WeeklyRota";
 
 interface PayslipItem {
   id: string;
   fileName: string;
   createdAt: string;
+}
+
+interface EmployeeBusiness {
+  id: string;
+  name: string;
 }
 
 interface MyProfile {
@@ -18,6 +24,7 @@ interface MyProfile {
   startDate?: string;
   address?: string;
   contactNumber?: string;
+  employeeBusinesses?: EmployeeBusiness[];
 }
 
 export default function MyPayslipsClient({ userName, isEmployer = false }: { userName: string; isEmployer?: boolean }) {
@@ -109,6 +116,21 @@ export default function MyPayslipsClient({ userName, isEmployer = false }: { use
           <div className="text-slate-700 text-lg font-medium">Could not load your information.</div>
         )}
       </section>
+
+      {profile?.employeeBusinesses && profile.employeeBusinesses.length > 0 && (
+        <section className="mb-10">
+          <h2 className="text-xl font-semibold text-slate-900 mb-4 uppercase tracking-wide">My rota</h2>
+          <p className="text-slate-700 text-lg mb-4">Weekly rota for your workplaces (view only).</p>
+          <div className="space-y-8">
+            {profile.employeeBusinesses.map((b) => (
+              <div key={b.id}>
+                <h3 className="text-lg font-medium text-slate-800 mb-3">{b.name}</h3>
+                <WeeklyRota businessId={b.id} readOnly />
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
 
       <section className="mb-10">
         <h2 className="text-xl font-semibold text-slate-900 mb-4 uppercase tracking-wide">My payslips</h2>

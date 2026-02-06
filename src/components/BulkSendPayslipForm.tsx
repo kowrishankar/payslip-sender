@@ -264,7 +264,7 @@ export default function BulkSendPayslipForm({
           <button
             type="button"
             onClick={onClose}
-            className="inline-flex items-center gap-1.5 py-2 px-4 rounded-xl border border-slate-200 text-slate-700 hover:bg-slate-100 font-medium text-lg uppercase tracking-wide"
+            className="inline-flex items-center gap-1.5 py-2 px-4 rounded-xl border border-slate-200 text-slate-700 hover:bg-slate-100 font-medium text-lg tracking-wide"
           >
             <IconX className="w-4 h-4" />
             Cancel
@@ -274,7 +274,7 @@ export default function BulkSendPayslipForm({
               type="button"
               onClick={() => handleSubmit(false)}
               disabled={loading}
-              className="inline-flex items-center gap-1.5 py-2 px-4 rounded-xl bg-teal-500 hover:bg-teal-600 text-white font-medium text-lg uppercase tracking-wide shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
+              className="inline-flex items-center gap-1.5 py-2 px-4 rounded-xl bg-teal-500 hover:bg-teal-600 text-white font-medium text-lg tracking-wide shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <IconPaperAirplane className="w-4 h-4" />
               {loading ? "Scheduling…" : "Schedule"}
@@ -284,10 +284,10 @@ export default function BulkSendPayslipForm({
             type="button"
             onClick={() => handleSubmit(true)}
             disabled={loading}
-            className="inline-flex items-center gap-1.5 py-2 px-4 rounded-xl bg-cyan-500 hover:bg-cyan-600 text-white font-medium text-lg uppercase tracking-wide shadow-md shadow-cyan-500/25 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="inline-flex items-center gap-1.5 py-2 px-4 rounded-xl bg-cyan-500 hover:bg-cyan-600 text-white font-medium text-lg tracking-wide shadow-md shadow-cyan-500/25 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <IconPaperAirplane className="w-4 h-4" />
-            {loading ? "Sending…" : "Send now"}
+            {loading ? "Sending…" : "Send Now"}
           </button>
         </div>
       </div>

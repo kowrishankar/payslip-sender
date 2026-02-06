@@ -149,16 +149,16 @@ export default function PayslipsSentList({
             <button
               type="button"
               onClick={setThisWeek}
-              className="px-3 py-2 rounded-xl text-lg font-medium uppercase tracking-wide border border-slate-200 text-slate-700 hover:bg-slate-100"
+              className="px-3 py-2 rounded-xl text-lg font-medium tracking-wide border border-slate-200 text-slate-700 hover:bg-slate-100"
             >
-              This week
+              This Week
             </button>
             <button
               type="button"
               onClick={setThisMonth}
-              className="px-3 py-2 rounded-xl text-lg font-medium uppercase tracking-wide border border-slate-200 text-slate-700 hover:bg-slate-100"
+              className="px-3 py-2 rounded-xl text-lg font-medium tracking-wide border border-slate-200 text-slate-700 hover:bg-slate-100"
             >
-              This month
+              This Month
             </button>
           </div>
         </div>

@@ -28,6 +28,7 @@ model User {
   payslipsReceived           Payslip[]           @relation("EmployeePayslips")
   scheduledPayslipsSent       ScheduledPayslip[]  @relation("EmployerScheduledPayslips")
   scheduledPayslipsReceived   ScheduledPayslip[]  @relation("EmployeeScheduledPayslips")
+  rotaShifts                 RotaShift[]         @relation("RotaShifts")
 }
 
 model Business {
@@ -46,6 +47,7 @@ model Business {
   employees          BusinessEmployee[] @relation("BusinessEmployees")
   payslips           Payslip[]          @relation("BusinessPayslips")
   scheduledPayslips  ScheduledPayslip[] @relation("ScheduledPayslips")
+  rotaShifts         RotaShift[]        @relation("BusinessRota")
 }
 
 model BusinessEmployee {
@@ -59,6 +61,22 @@ model BusinessEmployee {
   employee       User     @relation("Employee", fields: [employeeId], references: [id], onDelete: Cascade)
 
   @@id([businessId, employeeId])
+}
+
+// Weekly rota: one shift per employee per day (dayOfWeek 0=Sunday .. 6=Saturday)
+model RotaShift {
+  id          String   @id @default(cuid())
+  businessId  String
+  employeeId  String
+  dayOfWeek   Int      // 0=Sunday, 1=Monday, ... 6=Saturday
+  startTime   String   // "09:00" 24h
+  endTime     String   // "17:00" 24h
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  business    Business @relation("BusinessRota", fields: [businessId], references: [id], onDelete: Cascade)
+  employee    User     @relation("RotaShifts", fields: [employeeId], references: [id], onDelete: Cascade)
+
+  @@index([businessId, dayOfWeek])
 }
 
 model Payslip {
